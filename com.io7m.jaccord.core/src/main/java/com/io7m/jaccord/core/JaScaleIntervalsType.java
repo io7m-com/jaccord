@@ -16,56 +16,45 @@
 
 package com.io7m.jaccord.core;
 
-import io.vavr.collection.Set;
-import io.vavr.collection.Vector;
+import io.vavr.collection.SortedSet;
 import org.immutables.value.Value;
 
+import java.util.stream.Collectors;
+
 /**
- * The type of scales.
+ * The type of scale intervals.
  */
 
 @JaImmutableStyleType
 @Value.Immutable
-public interface JaScaleType
+public interface JaScaleIntervalsType
 {
-  /**
-   * @return The root note of the scale
-   */
-
-  @Value.Parameter
-  JaNote root();
-
   /**
    * @return The intervals of the scale relative to the root note
    */
 
   @Value.Parameter
-  JaScaleIntervals intervals();
+  SortedSet<Integer> intervals();
 
   /**
-   * @return The notes of the scale in order
+   * Check that all intervals are non-zero and less than 12.
    */
 
-  @Value.Derived
-  default Vector<JaNote> notesOrdered()
+  @Value.Check
+  default void checkPreconditions()
   {
-    Vector<JaNote> notes = Vector.of(this.root());
-    for (final Integer i : this.intervals().intervals()) {
-      notes = notes.append(this.root().stepBy(i.intValue()));
+    final SortedSet<Integer> is = this.intervals();
+    if (is.exists(i -> i.intValue() < 1 || i.intValue() >= 12)) {
+      throw new JaExceptionScale(
+        new StringBuilder(64)
+          .append("Scale validity error.")
+          .append(System.lineSeparator())
+          .append("  Expected: All intervals must be in the range [1, 11]")
+          .append(System.lineSeparator())
+          .append("  Received: ")
+          .append(is.map(Object::toString).collect(Collectors.joining(" ")))
+          .append(System.lineSeparator())
+          .toString());
     }
-    return notes;
-  }
-
-  /**
-   * @return The notes of the scale
-   */
-
-  @Value.Derived
-  default Set<JaNote> notes()
-  {
-    return this.intervals()
-      .intervals()
-      .map(i -> this.root().stepBy(i.intValue()))
-      .add(this.root());
   }
 }

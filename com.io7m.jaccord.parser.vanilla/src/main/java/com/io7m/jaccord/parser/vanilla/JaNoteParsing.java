@@ -46,7 +46,7 @@ final class JaNoteParsing
     throw new UnreachableCodeException();
   }
 
-  static Validation<Seq<JaParseError>, JaNote> parseNote(
+  public static Validation<Seq<JaParseError>, JaNote> parseNote(
     final JaParserConfigurationType config,
     final LexicalPosition<Path> position,
     final String text)

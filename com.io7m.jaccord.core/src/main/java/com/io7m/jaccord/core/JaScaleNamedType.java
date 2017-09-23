@@ -16,56 +16,34 @@
 
 package com.io7m.jaccord.core;
 
-import io.vavr.collection.Set;
-import io.vavr.collection.Vector;
 import org.immutables.value.Value;
 
 /**
- * The type of scales.
+ * The type of named scales.
  */
 
 @JaImmutableStyleType
 @Value.Immutable
-public interface JaScaleType
+public interface JaScaleNamedType
 {
   /**
-   * @return The root note of the scale
+   * @return The unique identifier of the scale
    */
 
   @Value.Parameter
-  JaNote root();
+  String id();
 
   /**
-   * @return The intervals of the scale relative to the root note
+   * @return The long name of the scale
+   */
+
+  @Value.Parameter
+  String name();
+
+  /**
+   * @return The intervals of the scale
    */
 
   @Value.Parameter
   JaScaleIntervals intervals();
-
-  /**
-   * @return The notes of the scale in order
-   */
-
-  @Value.Derived
-  default Vector<JaNote> notesOrdered()
-  {
-    Vector<JaNote> notes = Vector.of(this.root());
-    for (final Integer i : this.intervals().intervals()) {
-      notes = notes.append(this.root().stepBy(i.intValue()));
-    }
-    return notes;
-  }
-
-  /**
-   * @return The notes of the scale
-   */
-
-  @Value.Derived
-  default Set<JaNote> notes()
-  {
-    return this.intervals()
-      .intervals()
-      .map(i -> this.root().stepBy(i.intValue()))
-      .add(this.root());
-  }
 }

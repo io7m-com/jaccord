@@ -18,6 +18,7 @@ package com.io7m.jaccord.parser.vanilla;
 
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.core.JaScale;
+import com.io7m.jaccord.core.JaScaleIntervals;
 import com.io7m.jaccord.parser.api.JaParseError;
 import com.io7m.jaccord.parser.api.JaScaleParserConfiguration;
 import com.io7m.jaccord.parser.api.JaScaleParserProviderType;
@@ -25,6 +26,7 @@ import com.io7m.jaccord.parser.api.JaScaleParserType;
 import com.io7m.jlexing.core.LexicalPositionMutable;
 import com.io7m.jnull.NullCheck;
 import io.vavr.collection.Seq;
+import io.vavr.collection.SortedSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Validation;
 
@@ -79,9 +81,9 @@ public final class JaScaleParsers implements JaScaleParserProviderType
     {
       final JaNote root = notes.head();
       final Seq<JaNote> rest = notes.tail();
-      return Validation.valid(JaScale.of(
-        root,
-        rest.map(note -> Integer.valueOf(root.intervalUpTo(note))).toSortedSet()));
+      final SortedSet<Integer> intervals =
+        rest.map(note -> Integer.valueOf(root.intervalUpTo(note))).toSortedSet();
+      return Validation.valid(JaScale.of(root, JaScaleIntervals.of(intervals)));
     }
 
     @Override
