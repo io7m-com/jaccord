@@ -1,0 +1,5 @@
+[part [title Package Information] [id pkg]]
+[import "pkg-overview.sdi"]
+[import "pkg-install.sdi"]
+[import "pkg-platform.sdi"]
+[import "pkg-license.sdi"]

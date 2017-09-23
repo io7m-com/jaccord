@@ -1,0 +1,23 @@
+[section [title Installation] [id pkg.install]]
+[subsection [title Source compilation] [id pkg.install.source]]
+[paragraph]
+The project can be compiled and installed with
+[link-ext [target "http://maven.apache.org"] Maven]:
+
+[paragraph]
+[verbatim [type example] "$ mvn -C clean install"]
+
+[subsection [title Maven] [id pkg.install.maven]]
+[paragraph]
+Regular releases are made to the
+[link-ext [target "http://search.maven.org/#search%7Cga%7C1%7C${project.parent.name}"] Central Repository].
+
+[paragraph]
+All [link-ext [target "http://io7m.com"] io7m.com] packages use
+Semantic Versioning [footnote-ref semver], which implies that it is
+always safe to use version ranges with an exclusive upper bound equal
+to the next major version - the API of the package will not change in
+a backwards-incompatible manner before the next major version.
+
+[footnote [id semver]]
+[link-ext [target "http://semver.org"] http://semver.org]

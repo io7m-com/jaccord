@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:changelog xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
+  <c:project>com.io7m.jaccord</c:project>
+
+  <c:release c:ticket-system="com.github.io7m.jaccord">
+    <c:date>2017-09-21</c:date>
+    <c:version>0.0.1</c:version>
+    <c:item>
+      <c:date>2017-09-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Initial release.</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:ticket-system xml:id="com.github.io7m.jaccord">
+    <c:ticket-url>https://github.com/io7m/jaccord/issues/</c:ticket-url>
+  </c:ticket-system>
+
+</c:changelog>
