@@ -12,16 +12,12 @@
     <version>0.0.1</version>
   </parent>
 
-  <artifactId>com.io7m.jaccord.tests</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>com.io7m.jaccord.scales.api</artifactId>
+  <packaging>bundle</packaging>
 
-  <name>com.io7m.jaccord.tests</name>
-  <description>Harmony tools (Test suite)</description>
+  <name>com.io7m.jaccord.scales.api</name>
+  <description>Harmony tools (Scales API)</description>
   <url>http://io7m.github.io/jaccord/</url>
-
-  <properties>
-    <mdep.analyze.skip>true</mdep.analyze.skip>
-  </properties>
 
   <scm>
     <url>${project.parent.scm.url}</url>
@@ -37,36 +33,27 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.jaccord.parser.vanilla</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.jaccord.scales.vanilla</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.jaccord.scales.api</artifactId>
+      <artifactId>com.io7m.jaccord.scales.spi</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>com.io7m.jnull</groupId>
+      <artifactId>com.io7m.jnull.core</artifactId>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+      <groupId>com.io7m.jlexing</groupId>
+      <artifactId>com.io7m.jlexing.core</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -76,6 +63,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+
+      <!-- Produce OSGi bundle -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+              com.io7m.jaccord.scales.api
+            </Export-Package>
+          </instructions>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -25,6 +25,9 @@
     <module>com.io7m.jaccord.documentation</module>
     <module>com.io7m.jaccord.parser.api</module>
     <module>com.io7m.jaccord.parser.vanilla</module>
+    <module>com.io7m.jaccord.scales.spi</module>
+    <module>com.io7m.jaccord.scales.vanilla</module>
+    <module>com.io7m.jaccord.scales.api</module>
   </modules>
 
   <properties>

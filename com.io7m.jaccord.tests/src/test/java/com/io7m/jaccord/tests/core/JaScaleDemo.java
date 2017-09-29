@@ -8,12 +8,12 @@ import com.io7m.jaccord.core.JaScaleHarmonization;
 import com.io7m.jaccord.core.JaScaleHarmonizationChordTypes;
 import com.io7m.jaccord.core.JaScaleModes;
 import com.io7m.jaccord.core.JaScaleNamed;
-import com.io7m.jaccord.core.JaScaleNames;
 import com.io7m.jaccord.parser.api.JaAccidentalEncoding;
 import com.io7m.jaccord.parser.api.JaParseError;
 import com.io7m.jaccord.parser.api.JaScaleParserConfiguration;
 import com.io7m.jaccord.parser.api.JaScaleParserType;
 import com.io7m.jaccord.parser.vanilla.JaScaleParsers;
+import com.io7m.jaccord.scales.api.JaScales;
 import com.io7m.jlexing.core.LexicalPosition;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
@@ -47,8 +47,6 @@ public final class JaScaleDemo
            new BufferedReader(
              new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
 
-      final JaScaleNames scales = JaScaleNames.open();
-
       final JaScaleParserConfiguration config =
         JaScaleParserConfiguration.builder()
           .setAccidentals(JaAccidentalEncoding.UNICODE_AND_ASCII_ACCIDENTALS)
@@ -79,7 +77,7 @@ public final class JaScaleDemo
 
         {
           final List<JaScaleNamed> names =
-            scales.lookupByIntervals(scale.intervals());
+            JaScales.scalesByIntervals(scale.intervals());
 
           names.forEach(
             named -> System.out.printf(
@@ -120,7 +118,7 @@ public final class JaScaleDemo
 
           {
             final List<JaScaleNamed> mode_names =
-              scales.lookupByIntervals(mode.intervals());
+              JaScales.scalesByIntervals(mode.intervals());
 
             mode_names.forEach(
               named -> System.out.printf(

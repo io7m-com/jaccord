@@ -14,13 +14,18 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jaccord.core;
+package com.io7m.jaccord.scales.vanilla;
 
+import com.io7m.jaccord.core.JaScaleIntervals;
+import com.io7m.jaccord.core.JaScaleNamed;
+import com.io7m.jaccord.scales.spi.JaScaleProviderType;
 import com.io7m.jnull.NullCheck;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
+import io.vavr.collection.SortedSet;
+import io.vavr.collection.TreeMap;
 import io.vavr.collection.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,64 +38,30 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 /**
- * A database of scale names.
+ * A provider for a set of well-known scales.
  */
 
-public final class JaScaleNames
+public final class JaScalesVanilla implements JaScaleProviderType
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(JaScaleNames.class);
+    LoggerFactory.getLogger(JaScalesVanilla.class);
 
   private final ScalesDatabase database;
 
-  private JaScaleNames(
-    final ScalesDatabase in_database)
-  {
-    this.database = NullCheck.notNull(in_database, "Database");
-  }
-
   /**
-   * @return A new scale name database
+   * Construct a scale provider.
    */
 
-  public static JaScaleNames open()
+  public JaScalesVanilla()
   {
-    return new JaScaleNames(ScalesDatabase.open(loadScaleData()));
-  }
-
-  /**
-   * Determine if there are any scales containing exactly the given intervals.
-   *
-   * @param intervals The scale intervals
-   *
-   * @return A list of scales matching the given intervals
-   */
-
-  public List<JaScaleNamed> lookupByIntervals(
-    final JaScaleIntervals intervals)
-  {
-    return this.database.by_intervals.getOrElse(intervals, List.empty());
-  }
-
-  /**
-   * Determine if there is a scale with the given ID.
-   *
-   * @param id The unique ID of the scale
-   *
-   * @return The scale with the given ID, if any
-   */
-
-  public Optional<JaScaleNamed> lookupByName(
-    final String id)
-  {
-    return this.database.by_id.get(id).toJavaOptional();
+    this.database = ScalesDatabase.open(loadScaleData());
   }
 
   private static Properties loadScaleData()
   {
     try {
       final Properties props = new Properties();
-      final URL url = JaScaleNames.class.getResource("scales.properties");
+      final URL url = JaScalesVanilla.class.getResource("scales.properties");
       try (final InputStream stream = url.openStream()) {
         props.load(stream);
       }
@@ -100,15 +71,37 @@ public final class JaScaleNames
     }
   }
 
+  @Override
+  public SortedSet<String> scales()
+  {
+    return this.database.by_id.keySet();
+  }
+
+  @Override
+  public Optional<JaScaleNamed> scaleByID(
+    final String id)
+  {
+    NullCheck.notNull(id, "ID");
+    return this.database.by_id.get(id).toJavaOptional();
+  }
+
+  @Override
+  public List<JaScaleNamed> scalesByIntervals(
+    final JaScaleIntervals intervals)
+  {
+    NullCheck.notNull(intervals, "Intervals");
+    return this.database.by_intervals.getOrElse(intervals, List.empty());
+  }
+
   private static final class ScalesDatabase
   {
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");
     private final Map<JaScaleIntervals, List<JaScaleNamed>> by_intervals;
-    private final Map<String, JaScaleNamed> by_id;
+    private final TreeMap<String, JaScaleNamed> by_id;
 
     private ScalesDatabase(
       final Map<JaScaleIntervals, List<JaScaleNamed>> in_by_intervals,
-      final Map<String, JaScaleNamed> in_by_id)
+      final TreeMap<String, JaScaleNamed> in_by_id)
     {
       this.by_intervals =
         NullCheck.notNull(in_by_intervals, "By Intervals");
@@ -136,7 +129,7 @@ public final class JaScaleNames
     private static final class Builder
     {
       private Map<JaScaleIntervals, List<JaScaleNamed>> by_intervals = HashMap.empty();
-      private Map<String, JaScaleNamed> by_id = HashMap.empty();
+      private TreeMap<String, JaScaleNamed> by_id = TreeMap.empty();
 
       Builder()
       {
