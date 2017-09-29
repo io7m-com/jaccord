@@ -52,10 +52,19 @@ public final class JaChordInversions
     final SortedSet<Integer> new_intervals =
       intervals
         .tail()
-        .map(i -> Integer.valueOf(i.intValue() - first.intValue()))
-        .add(Integer.valueOf(new_root.intervalUpTo(chord.root())));
+        .add(nextLargerThanMax(intervals.max().get().intValue(), 12))
+        .map(i -> Integer.valueOf(i.intValue() - first.intValue()));
 
     return JaChord.of(new_root, JaChordIntervals.of(new_intervals));
+  }
+
+  private static Integer nextLargerThanMax(
+    final int i,
+    final int max)
+  {
+    final int f = (int) Math.ceil((double) i / (double) max);
+    final int v = f * max;
+    return Integer.valueOf(v);
   }
 
   /**

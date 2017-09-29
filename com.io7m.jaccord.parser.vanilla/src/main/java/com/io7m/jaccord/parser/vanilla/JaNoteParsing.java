@@ -32,7 +32,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class JaNoteParsing
+/**
+ * Functions to parse notes.
+ */
+
+public final class JaNoteParsing
 {
   private static final Pattern NOTE_ASCII =
     Pattern.compile("([ABCDEFG])([#b])?");
@@ -45,6 +49,16 @@ final class JaNoteParsing
   {
     throw new UnreachableCodeException();
   }
+
+  /**
+   * Parse a single note (such as {@code "C♯"}).
+   *
+   * @param config   The parser configuration
+   * @param position The current lexical position
+   * @param text     The input text
+   *
+   * @return A parsed note or a list of parse errors
+   */
 
   public static Validation<Seq<JaParseError>, JaNote> parseNote(
     final JaParserConfigurationType config,

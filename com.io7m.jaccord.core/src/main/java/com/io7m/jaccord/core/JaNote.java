@@ -35,7 +35,7 @@ public enum JaNote
    * C#
    */
 
-  C_SHARP("C#"),
+  C_SHARP("C♯"),
 
   /**
    * D
@@ -47,7 +47,7 @@ public enum JaNote
    * D#
    */
 
-  D_SHARP("D#"),
+  D_SHARP("D♯"),
 
   /**
    * E
@@ -65,7 +65,7 @@ public enum JaNote
    * F#
    */
 
-  F_SHARP("F#"),
+  F_SHARP("F♯"),
 
   /**
    * G
@@ -77,7 +77,7 @@ public enum JaNote
    * G#
    */
 
-  G_SHARP("G#"),
+  G_SHARP("G♯"),
 
   /**
    * A
@@ -89,7 +89,7 @@ public enum JaNote
    * A#
    */
 
-  A_SHARP("A#"),
+  A_SHARP("A♯"),
 
   /**
    * B

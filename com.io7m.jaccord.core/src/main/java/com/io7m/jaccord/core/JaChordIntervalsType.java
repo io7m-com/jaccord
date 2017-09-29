@@ -54,7 +54,6 @@ public interface JaChordIntervalsType
 
   @Value.Check
   default void checkPreconditions()
-    throws JaExceptionChord
   {
     final SortedSet<Integer> norm = this.intervalsNormalized();
     if (norm.isEmpty()) {
@@ -66,6 +65,23 @@ public interface JaChordIntervalsType
           .append(System.lineSeparator())
           .append("  Received: ")
           .append(this.intervalsNormalized()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(" ")))
+          .append(System.lineSeparator())
+          .toString());
+    }
+
+    final SortedSet<Integer> out_of_range =
+      this.intervals().filter(i -> i.intValue() < 0 || i.intValue() > 24);
+    if (!out_of_range.isEmpty()) {
+      throw new JaExceptionChord(
+        new StringBuilder(64)
+          .append("Out-of-range chord intervals.")
+          .append(System.lineSeparator())
+          .append("  Expected: All intervals to be in the range [0, 24]")
+          .append(System.lineSeparator())
+          .append("  Received: ")
+          .append(this.intervals()
                     .map(Object::toString)
                     .collect(Collectors.joining(" ")))
           .append(System.lineSeparator())

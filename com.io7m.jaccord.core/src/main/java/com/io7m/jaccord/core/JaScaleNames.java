@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -69,6 +70,20 @@ public final class JaScaleNames
     final JaScaleIntervals intervals)
   {
     return this.database.by_intervals.getOrElse(intervals, List.empty());
+  }
+
+  /**
+   * Determine if there is a scale with the given ID.
+   *
+   * @param id The unique ID of the scale
+   *
+   * @return The scale with the given ID, if any
+   */
+
+  public Optional<JaScaleNamed> lookupByName(
+    final String id)
+  {
+    return this.database.by_id.get(id).toJavaOptional();
   }
 
   private static Properties loadScaleData()
