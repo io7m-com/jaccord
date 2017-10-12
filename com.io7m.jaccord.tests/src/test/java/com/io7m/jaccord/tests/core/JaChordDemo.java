@@ -92,11 +92,11 @@ public final class JaChordDemo
 
             System.out.println(
               String.format(
-                "%-32s : %s/%s%s",
+                "%-32s : %s%s/%s",
                 "Slash",
-                base_slash.bass().noteName(),
                 base_slash.chord().root().noteName(),
-                slash_name));
+                slash_name,
+                base_slash.bass().noteName()));
           });
 
           final Vector<JaChord> inversions =
@@ -126,13 +126,13 @@ public final class JaChordDemo
 
               System.out.println(
                 String.format(
-                  "%-32s : %s/%s%s",
+                  "%-32s : %s%s/%s",
                   String.format(
                     "Slash Inversion %d ",
                     Integer.valueOf(final_index)),
-                  inversion_slash.bass().noteName(),
                   inversion_slash.chord().root().noteName(),
-                  inversion_slash_name));
+                  inversion_slash_name,
+                  inversion_slash.bass().noteName()));
             });
 
           }
