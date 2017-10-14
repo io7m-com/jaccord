@@ -33,26 +33,8 @@
     </dependency>
 
     <dependency>
-      <groupId>com.io7m.junreachable</groupId>
-      <artifactId>com.io7m.junreachable.core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.io7m.jnull</groupId>
       <artifactId>com.io7m.jnull.core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.immutables</groupId>
-      <artifactId>value</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
     </dependency>
   </dependencies>
 
