@@ -16,10 +16,10 @@
 
 package com.io7m.jaccord.tests.core;
 
+import com.io7m.jaccord.chord_names.vanilla.JaChordNames;
 import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaChordIntervals;
 import com.io7m.jaccord.core.JaChordInversions;
-import com.io7m.jaccord.core.JaChordNames;
 import com.io7m.jaccord.core.JaNote;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;

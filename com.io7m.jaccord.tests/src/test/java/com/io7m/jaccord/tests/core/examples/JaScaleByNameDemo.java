@@ -1,7 +1,7 @@
-package com.io7m.jaccord.tests.core;
+package com.io7m.jaccord.tests.core.examples;
 
+import com.io7m.jaccord.chord_names.vanilla.JaChordNames;
 import com.io7m.jaccord.core.JaChord;
-import com.io7m.jaccord.core.JaChordNames;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.core.JaScale;
 import com.io7m.jaccord.core.JaScaleHarmonization;
@@ -70,7 +70,7 @@ public final class JaScaleByNameDemo
 
       final Vector<JaChord> chords =
         JaScaleHarmonization.harmonize(
-          JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale);
+          JaScaleHarmonizationChordTypes.NINTH_CHORDS, scale);
 
       for (int index = 0; index < chords.size(); ++index) {
         final JaChord chord = chords.get(index);

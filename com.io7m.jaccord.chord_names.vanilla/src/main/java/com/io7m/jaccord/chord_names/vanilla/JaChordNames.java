@@ -14,8 +14,9 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jaccord.core;
+package com.io7m.jaccord.chord_names.vanilla;
 
+import com.io7m.jaccord.core.JaChordIntervals;
 import com.io7m.jnull.NullCheck;
 import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;

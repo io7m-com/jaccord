@@ -1,9 +1,9 @@
-package com.io7m.jaccord.tests.core;
+package com.io7m.jaccord.tests.core.examples;
 
+import com.io7m.jaccord.chord_names.vanilla.JaChordNames;
 import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaErrorType;
 import com.io7m.jaccord.core.JaChordInversions;
-import com.io7m.jaccord.core.JaChordNames;
 import com.io7m.jaccord.core.JaChordSlash;
 import com.io7m.jaccord.core.JaChordSlashes;
 import com.io7m.jaccord.core.JaNote;

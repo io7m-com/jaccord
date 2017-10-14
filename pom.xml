@@ -19,15 +19,18 @@
   <url>http://github.com/io7m/jaccord</url>
 
   <modules>
-    <module>com.io7m.jaccord.core</module>
-    <module>com.io7m.jaccord.tests</module>
     <module>com.io7m.jaccord.checkstyle</module>
+    <module>com.io7m.jaccord.chord_names.api</module>
+    <module>com.io7m.jaccord.chord_names.vanilla</module>
+    <module>com.io7m.jaccord.core</module>
+    <module>com.io7m.jaccord.cpdsl</module>
     <module>com.io7m.jaccord.documentation</module>
     <module>com.io7m.jaccord.parser.api</module>
     <module>com.io7m.jaccord.parser.vanilla</module>
+    <module>com.io7m.jaccord.scales.api</module>
     <module>com.io7m.jaccord.scales.spi</module>
     <module>com.io7m.jaccord.scales.vanilla</module>
-    <module>com.io7m.jaccord.scales.api</module>
+    <module>com.io7m.jaccord.tests</module>
   </modules>
 
   <properties>

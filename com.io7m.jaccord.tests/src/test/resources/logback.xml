@@ -12,7 +12,7 @@
     <target>System.err</target>
   </appender>
 
-  <root level="TRACE">
+  <root level="DEBUG">
     <appender-ref ref="STDERR"/>
   </root>
 
