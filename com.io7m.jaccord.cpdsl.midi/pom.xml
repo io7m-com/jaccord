@@ -49,7 +49,11 @@
       <groupId>com.io7m.jnull</groupId>
       <artifactId>com.io7m.jnull.core</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>io.vavr</groupId>
       <artifactId>vavr</artifactId>

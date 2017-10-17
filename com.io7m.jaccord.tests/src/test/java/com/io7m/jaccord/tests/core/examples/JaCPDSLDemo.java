@@ -18,14 +18,16 @@ package com.io7m.jaccord.tests.core.examples;
 
 import com.io7m.jaccord.cpdsl.JaCPDSL;
 import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporter;
+import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporterConfiguration;
 
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.io7m.jaccord.core.JaNote.F;
+import static com.io7m.jaccord.core.JaNote.C;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
@@ -42,19 +44,28 @@ public final class JaCPDSLDemo
     throws IOException
   {
     final JaCPDSL d = JaCPDSL.create();
-    final JaCPDSL.Scale minor = d.scale(F, "Natural_Minor");
+    final JaCPDSL.Scale base = d.scale(C, "Major");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic(minor, I), 4),
-        d.change(d.diatonic(minor, II), 4),
-        d.change(d.diatonic(minor, V), 4),
-        d.change(d.diatonic(minor, I), 8));
+        d.change(d.diatonic7(base, I), 3),
+        d.change(d.secondaryDominant(d.diatonic(base, II)), 1),
+        d.change(d.diatonic7(base, II), 3),
+        d.change(d.secondaryDominant(d.diatonic(base, V)), 1),
+        d.change(d.diatonic7(base, V), 4),
+        d.change(d.diatonic7(base, I), 8));
 
     System.out.println(p);
 
+    final JaCPDSLExporterConfiguration configuration =
+      JaCPDSLExporterConfiguration.builder()
+        .setDoubleRoot(true)
+        .build();
+
     try (final OutputStream out = Files.newOutputStream(Paths.get("output.mid"))) {
-      MidiSystem.write(JaCPDSLExporter.export(p), 1, out);
+      final Sequence sequence =
+        JaCPDSLExporter.exportWithConfiguration(configuration, p);
+      MidiSystem.write(sequence, 1, out);
     }
   }
 }

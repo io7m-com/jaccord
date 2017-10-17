@@ -36,6 +36,11 @@ import java.nio.charset.StandardCharsets;
 
 public final class JaCPDSLExporter
 {
+  private static final JaCPDSLExporterConfiguration DEFAULT_CONFIGURATION =
+    JaCPDSLExporterConfiguration.builder()
+      .setDoubleRoot(false)
+      .build();
+
   private JaCPDSLExporter()
   {
 
@@ -52,14 +57,17 @@ public final class JaCPDSLExporter
    * as simple root-position voicings with no attempt made to make the result
    * more musically pleasing.
    *
-   * @param progression The input progression
+   * @param configuration The exporter configuration
+   * @param progression   The input progression
    *
    * @return A MIDI sequence
    */
 
-  public static Sequence export(
+  public static Sequence exportWithConfiguration(
+    final JaCPDSLExporterConfiguration configuration,
     final JaCPDSL.Progression progression)
   {
+    NullCheck.notNull(configuration, "Configuration");
     NullCheck.notNull(progression, "Progression");
 
     try {
@@ -151,14 +159,31 @@ public final class JaCPDSLExporter
         track.add(me);
       }
 
-      exportProgression(track, progression);
+      exportProgression(configuration, track, progression);
       return sequence;
     } catch (final InvalidMidiDataException e) {
       throw new UnreachableCodeException(e);
     }
   }
 
+  /**
+   * Produce a MIDI sequence from the given progression. The chords are produced
+   * as simple root-position voicings with no attempt made to make the result
+   * more musically pleasing.
+   *
+   * @param progression The input progression
+   *
+   * @return A MIDI sequence
+   */
+
+  public static Sequence export(
+    final JaCPDSL.Progression progression)
+  {
+    return exportWithConfiguration(DEFAULT_CONFIGURATION, progression);
+  }
+
   private static void exportProgression(
+    final JaCPDSLExporterConfiguration configuration,
     final Track track,
     final JaCPDSL.Progression progression)
   {
@@ -169,7 +194,7 @@ public final class JaCPDSLExporter
     for (final JaCPDSL.Change ch : progression.changes()) {
       final long duration = (long) ch.beats() * quarter;
       final long time_next = time + duration;
-      addChord(track, time, time_next, ch.chord().evaluate());
+      addChord(configuration, track, time, time_next, ch.chord().evaluate());
       time = time_next;
     }
 
@@ -189,6 +214,7 @@ public final class JaCPDSLExporter
   }
 
   private static void addChord(
+    final JaCPDSLExporterConfiguration configuration,
     final Track track,
     final long time,
     final long time_end,
@@ -197,6 +223,10 @@ public final class JaCPDSLExporter
     final int root = toMidiNote(chord.root());
 
     addNote(track, time, time_end, root);
+
+    if (configuration.doubleRoot()) {
+      addNote(track, time, time_end, root - 12);
+    }
 
     for (final Integer i : chord.intervals().intervalsNormalized()) {
       addNote(track, time, time_end, root + i.intValue());
