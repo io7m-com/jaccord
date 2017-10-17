@@ -14,37 +14,47 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jaccord.tests.core;
+package com.io7m.jaccord.tests.core.examples;
 
 import com.io7m.jaccord.cpdsl.JaCPDSL;
+import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporter;
 
-import static com.io7m.jaccord.core.JaNote.E;
+import javax.sound.midi.MidiSystem;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static com.io7m.jaccord.core.JaNote.F;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
-import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
 
-public final class JaCPDSLTest
+public final class JaCPDSLDemo
 {
-  private JaCPDSLTest()
+  private JaCPDSLDemo()
   {
 
   }
 
   public static void main(
     final String[] args)
+    throws IOException
   {
     final JaCPDSL d = JaCPDSL.create();
-    final JaCPDSL.Scale minor = d.scale(E, "Natural_Minor");
+    final JaCPDSL.Scale minor = d.scale(F, "Natural_Minor");
 
-    System.out.println(
+    final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic9(minor, I), 5),
-        d.change(d.diatonic9(minor, II), 5),
-        d.change(d.diatonic9(minor, I), 5),
-        d.change(d.diatonic9(minor, IV), 5),
-        d.change(d.diatonic9(minor, V), 10)
-      )
-    );
+        d.change(d.diatonic(minor, I), 4),
+        d.change(d.diatonic(minor, II), 4),
+        d.change(d.diatonic(minor, V), 4),
+        d.change(d.diatonic(minor, I), 8));
+
+    System.out.println(p);
+
+    try (final OutputStream out = Files.newOutputStream(Paths.get("output.mid"))) {
+      MidiSystem.write(JaCPDSLExporter.export(p), 1, out);
+    }
   }
 }

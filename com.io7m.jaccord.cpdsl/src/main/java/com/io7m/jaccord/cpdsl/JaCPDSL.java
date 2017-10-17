@@ -209,6 +209,15 @@ public final class JaCPDSL
       this.changes = NullCheck.notNull(in_changes, "Changes");
     }
 
+    /**
+     * @return The list of chord changes
+     */
+
+    public Vector<Change> changes()
+    {
+      return this.changes;
+    }
+
     @Override
     public String toString()
     {
@@ -233,6 +242,24 @@ public final class JaCPDSL
     {
       this.chord = NullCheck.notNull(in_chord, "Chord");
       this.beats = in_beats;
+    }
+
+    /**
+     * @return The chord term associated with the change
+     */
+
+    public ChordTermType chord()
+    {
+      return this.chord;
+    }
+
+    /**
+     * @return The number of beats that the chord is held
+     */
+
+    public int beats()
+    {
+      return this.beats;
     }
 
     @Override

@@ -31,6 +31,7 @@
     <module>com.io7m.jaccord.scales.spi</module>
     <module>com.io7m.jaccord.scales.vanilla</module>
     <module>com.io7m.jaccord.tests</module>
+    <module>com.io7m.jaccord.cpdsl.midi</module>
   </modules>
 
   <properties>
