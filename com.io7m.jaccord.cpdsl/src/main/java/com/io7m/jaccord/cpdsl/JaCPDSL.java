@@ -29,7 +29,11 @@ import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.api.JaScales;
 import com.io7m.jnull.NullCheck;
 import com.io7m.junreachable.UnimplementedCodeException;
+import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
+import io.vavr.collection.Map;
+import io.vavr.collection.Set;
+import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 
@@ -261,6 +265,83 @@ public final class JaCPDSL
   }
 
   /**
+   * Determine the eleventh chord at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic diatonic11(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.ELEVENTH_CHORDS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+    }
+
+    throw new UnimplementedCodeException();
+  }
+
+  /**
+   * Alter a given chord.
+   *
+   * @param input   The input chord
+   * @param add     The additions to the chord
+   * @param replace The replacements of the chord tones
+   *
+   * @return An altered chord
+   */
+
+  public ChordAltered alteredAddedReplaced(
+    final ChordTermType input,
+    final Set<Integer> add,
+    final Map<Integer, Integer> replace)
+  {
+    return new ChordAltered(input, add, replace);
+  }
+
+  /**
+   * Alter a given chord.
+   *
+   * @param input   The input chord
+   * @param replace The replacements of the chord tones
+   *
+   * @return An altered chord
+   */
+
+  public ChordAltered alteredReplaced(
+    final ChordTermType input,
+    final Map<Integer, Integer> replace)
+  {
+    return new ChordAltered(input, TreeSet.empty(), replace);
+  }
+
+  /**
+   * Alter a given chord.
+   *
+   * @param input The input chord
+   * @param add   The additions to the chord
+   *
+   * @return An altered chord
+   */
+
+  public ChordAltered alteredAdded(
+    final ChordTermType input,
+    final Set<Integer> add)
+  {
+    return new ChordAltered(input, add, HashMap.empty());
+  }
+
+  /**
    * A scale degree.
    */
 
@@ -357,7 +438,13 @@ public final class JaCPDSL
        * The first inversion of a chord.
        */
 
-      CHORD_INVERSION
+      CHORD_INVERSION,
+
+      /**
+       * A chord altered with the replacement or addition of specific notes.
+       */
+
+      CHORD_ALTERED
     }
   }
 
@@ -378,6 +465,24 @@ public final class JaCPDSL
       this.root = NullCheck.notNull(in_root, "Root");
       this.scale_named = NullCheck.notNull(in_scale, "Scale");
       this.scale = JaScale.of(this.root, this.scale_named.intervals());
+    }
+
+    /**
+     * @return The named scale
+     */
+
+    public JaScaleNamed scaleNamed()
+    {
+      return this.scale_named;
+    }
+
+    /**
+     * @return The scale
+     */
+
+    public JaScale scale()
+    {
+      return this.scale;
     }
 
     @Override
@@ -544,6 +649,61 @@ public final class JaCPDSL
     public Type type()
     {
       return Type.CHORD_INVERSION;
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.output.root().noteName());
+      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      return sb.toString();
+    }
+  }
+
+  /**
+   * An altered chord.
+   */
+
+  public final class ChordAltered implements ChordTermType
+  {
+    private final ChordTermType input;
+    private final JaChord output;
+    private final Set<Integer> add;
+    private final Map<Integer, Integer> replace;
+
+    private ChordAltered(
+      final ChordTermType in_input,
+      final Set<Integer> in_add,
+      final Map<Integer, Integer> in_replace)
+    {
+      this.input = NullCheck.notNull(in_input, "Chord");
+      this.add = NullCheck.notNull(in_add, "Add");
+      this.replace = NullCheck.notNull(in_replace, "Replace");
+      this.output = this.evaluateEager();
+    }
+
+    @Override
+    public JaChord evaluate()
+    {
+      return this.output;
+    }
+
+    private JaChord evaluateEager()
+    {
+      final JaChord e = this.input.evaluate();
+      final SortedSet<Integer> r =
+        e.intervals()
+          .intervalsNormalized()
+          .map(i -> this.replace.getOrElse(i, i));
+      final SortedSet<Integer> a = r.addAll(this.add);
+      return JaChord.of(e.root(), JaChordIntervals.of(a));
+    }
+
+    @Override
+    public Type type()
+    {
+      return Type.CHORD_ALTERED;
     }
 
     @Override

@@ -16,9 +16,12 @@
 
 package com.io7m.jaccord.tests.core.examples;
 
+import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.cpdsl.JaCPDSL;
 import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporter;
 import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporterConfiguration;
+import io.vavr.collection.TreeMap;
+import io.vavr.collection.TreeSet;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
@@ -28,12 +31,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static com.io7m.jaccord.core.JaNote.C;
+import static com.io7m.jaccord.core.JaNote.E;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.III;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
-import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VI;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VII;
 
 public final class JaCPDSLDemo
@@ -48,15 +51,39 @@ public final class JaCPDSLDemo
     throws IOException
   {
     final JaCPDSL d = JaCPDSL.create();
-    final JaCPDSL.Scale base = d.scale(C, "Major");
-    final JaCPDSL.Scale borrowed = d.scale(C, "Phrygian_Mode");
+
+    final JaCPDSL.Scale base = d.scale(E, "Phrygian_Mode");
+    final JaCPDSL.Scale borrowed = d.scale(E, "Major");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic9(base, II), 4),
-        d.change(d.inversion(d.secondaryDominant(d.diatonic7(base, V))), 4),
-        d.change(d.inversion(d.secondaryDominant(d.diatonic7(base, I))), 4),
-        d.change(d.diatonic7(base, I), 8)
+        d.change(d.diatonic(base, I), 4),
+        d.change(d.diatonic(base, I), 3),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
+
+        d.change(d.diatonic(base, I), 4),
+        d.change(d.diatonic(base, I), 3),
+        d.change(d.diatonic7(base, II), 1),
+
+        d.change(d.diatonic(base, I), 4),
+        d.change(d.diatonic(base, I), 3),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
+
+        d.change(d.diatonic(base, I), 4),
+        d.change(d.diatonic(base, I), 3),
+        d.change(d.diatonic11(base, II), 1),
+
+        d.change(d.diatonic9(base, V), 3),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, IV)), 6), 1),
+
+        d.change(d.diatonic9(base, IV), 3),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, II)), 6), 1),
+
+        d.change(d.diatonic9(base, II), 3),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
+
+        d.change(d.alteredAddedReplaced(d.diatonic7(borrowed, I), TreeSet.of(JaIntervals.MINOR_TENTH), TreeMap.of(JaIntervals.MAJOR_SEVENTH, JaIntervals.MINOR_SEVENTH)), 3),
+        d.change(d.diatonic9(borrowed, VII), 1)
       );
 
     System.out.println(p);
