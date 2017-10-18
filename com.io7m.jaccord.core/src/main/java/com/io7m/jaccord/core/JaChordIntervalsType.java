@@ -57,7 +57,7 @@ public interface JaChordIntervalsType
   {
     final SortedSet<Integer> norm = this.intervalsNormalized();
     if (norm.isEmpty()) {
-      throw new JaExceptionChord(
+      throw new JaExceptionChordInvalid(
         new StringBuilder(64)
           .append("Malformed chord intervals.")
           .append(System.lineSeparator())
@@ -74,7 +74,7 @@ public interface JaChordIntervalsType
     final SortedSet<Integer> out_of_range =
       this.intervals().filter(i -> i.intValue() < 0 || i.intValue() > 24);
     if (!out_of_range.isEmpty()) {
-      throw new JaExceptionChord(
+      throw new JaExceptionChordInvalid(
         new StringBuilder(64)
           .append("Out-of-range chord intervals.")
           .append(System.lineSeparator())

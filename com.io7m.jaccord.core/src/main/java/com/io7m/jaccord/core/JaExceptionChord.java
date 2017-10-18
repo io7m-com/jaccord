@@ -20,7 +20,7 @@ package com.io7m.jaccord.core;
  * The type of exceptions related to chords.
  */
 
-public final class JaExceptionChord extends JaException
+public abstract class JaExceptionChord extends JaException
 {
   /**
    * Construct an exception.

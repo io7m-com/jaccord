@@ -17,10 +17,10 @@
 package com.io7m.jaccord.core;
 
 /**
- * The type of exceptions related to scales.
+ * An exception indicating a nonexistent scale.
  */
 
-public abstract class JaExceptionScale extends JaException
+public final class JaExceptionScaleNonexistent extends JaExceptionScale
 {
   /**
    * Construct an exception.
@@ -28,7 +28,7 @@ public abstract class JaExceptionScale extends JaException
    * @param message The exception message
    */
 
-  public JaExceptionScale(
+  public JaExceptionScaleNonexistent(
     final String message)
   {
     super(message);
@@ -41,7 +41,7 @@ public abstract class JaExceptionScale extends JaException
    * @param cause   The cause
    */
 
-  public JaExceptionScale(
+  public JaExceptionScaleNonexistent(
     final String message,
     final Throwable cause)
   {
@@ -54,7 +54,7 @@ public abstract class JaExceptionScale extends JaException
    * @param cause The cause
    */
 
-  public JaExceptionScale(
+  public JaExceptionScaleNonexistent(
     final Throwable cause)
   {
     super(cause);

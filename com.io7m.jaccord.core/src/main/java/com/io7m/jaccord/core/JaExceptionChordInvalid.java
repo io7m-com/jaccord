@@ -17,10 +17,10 @@
 package com.io7m.jaccord.core;
 
 /**
- * The type of exceptions related to scales.
+ * The type of exceptions indicating invalid chords.
  */
 
-public abstract class JaExceptionScale extends JaException
+public final class JaExceptionChordInvalid extends JaExceptionChord
 {
   /**
    * Construct an exception.
@@ -28,7 +28,7 @@ public abstract class JaExceptionScale extends JaException
    * @param message The exception message
    */
 
-  public JaExceptionScale(
+  public JaExceptionChordInvalid(
     final String message)
   {
     super(message);
@@ -41,7 +41,7 @@ public abstract class JaExceptionScale extends JaException
    * @param cause   The cause
    */
 
-  public JaExceptionScale(
+  public JaExceptionChordInvalid(
     final String message,
     final Throwable cause)
   {
@@ -54,7 +54,7 @@ public abstract class JaExceptionScale extends JaException
    * @param cause The cause
    */
 
-  public JaExceptionScale(
+  public JaExceptionChordInvalid(
     final Throwable cause)
   {
     super(cause);

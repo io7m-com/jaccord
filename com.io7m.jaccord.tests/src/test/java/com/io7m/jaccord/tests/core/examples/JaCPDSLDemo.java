@@ -30,7 +30,10 @@ import java.nio.file.Paths;
 import static com.io7m.jaccord.core.JaNote.C;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
+import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.III;
+import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
+import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VI;
 
 public final class JaCPDSLDemo
 {
@@ -44,16 +47,20 @@ public final class JaCPDSLDemo
     throws IOException
   {
     final JaCPDSL d = JaCPDSL.create();
-    final JaCPDSL.Scale base = d.scale(C, "Major");
+    final JaCPDSL.Scale base = d.scale(C, "Natural_Minor");
+    final JaCPDSL.Scale borrowed = d.scale(C, "Major");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic7(base, I), 3),
-        d.change(d.secondaryDominant(d.diatonic(base, II)), 1),
-        d.change(d.diatonic7(base, II), 3),
-        d.change(d.secondaryDominant(d.diatonic(base, V)), 1),
-        d.change(d.diatonic7(base, V), 4),
-        d.change(d.diatonic7(base, I), 8));
+        d.change(d.diatonic7(base, I), 2),
+        d.change(d.diatonic7(base, II), 2),
+        d.change(d.diatonic7(base, IV), 2),
+        d.change(d.diatonic7(base, III), 2),
+        d.change(d.diatonic7(base, VI), 2),
+        d.change(d.diatonic7(borrowed, II), 2),
+        d.change(d.diatonic7(base, IV), 2),
+        d.change(d.diatonic7(base, I), 2)
+      );
 
     System.out.println(p);
 

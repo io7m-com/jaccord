@@ -45,7 +45,7 @@ public interface JaScaleIntervalsType
   {
     final SortedSet<Integer> is = this.intervals();
     if (is.exists(i -> i.intValue() < 1 || i.intValue() >= 12)) {
-      throw new JaExceptionScale(
+      throw new JaExceptionScaleInvalid(
         new StringBuilder(64)
           .append("Scale validity error.")
           .append(System.lineSeparator())
