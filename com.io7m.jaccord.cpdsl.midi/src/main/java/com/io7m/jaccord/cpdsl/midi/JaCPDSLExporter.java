@@ -17,6 +17,7 @@
 package com.io7m.jaccord.cpdsl.midi;
 
 import com.io7m.jaccord.core.JaChord;
+import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.cpdsl.JaCPDSL;
 import com.io7m.jnull.NullCheck;
@@ -229,6 +230,13 @@ public final class JaCPDSLExporter
     }
 
     for (final Integer i : chord.intervals().intervalsNormalized()) {
+      if (i.intValue() == JaIntervals.FIFTH.intValue()
+        || i.intValue() == JaIntervals.TRITAVE.intValue()) {
+        if (configuration.omitFifth()) {
+          continue;
+        }
+      }
+
       addNote(track, time, time_end, root + i.intValue());
     }
   }

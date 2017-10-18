@@ -34,6 +34,7 @@ import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.III;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VI;
+import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VII;
 
 public final class JaCPDSLDemo
 {
@@ -47,19 +48,15 @@ public final class JaCPDSLDemo
     throws IOException
   {
     final JaCPDSL d = JaCPDSL.create();
-    final JaCPDSL.Scale base = d.scale(C, "Natural_Minor");
-    final JaCPDSL.Scale borrowed = d.scale(C, "Major");
+    final JaCPDSL.Scale base = d.scale(C, "Major");
+    final JaCPDSL.Scale borrowed = d.scale(C, "Phrygian_Mode");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic7(base, I), 2),
-        d.change(d.diatonic7(base, II), 2),
-        d.change(d.diatonic7(base, IV), 2),
-        d.change(d.diatonic7(base, III), 2),
-        d.change(d.diatonic7(base, VI), 2),
-        d.change(d.diatonic7(borrowed, II), 2),
-        d.change(d.diatonic7(base, IV), 2),
-        d.change(d.diatonic7(base, I), 2)
+        d.change(d.diatonic9(base, II), 4),
+        d.change(d.inversion(d.secondaryDominant(d.diatonic7(base, V))), 4),
+        d.change(d.inversion(d.secondaryDominant(d.diatonic7(base, I))), 4),
+        d.change(d.diatonic7(base, I), 8)
       );
 
     System.out.println(p);
@@ -67,6 +64,7 @@ public final class JaCPDSLDemo
     final JaCPDSLExporterConfiguration configuration =
       JaCPDSLExporterConfiguration.builder()
         .setDoubleRoot(true)
+        .setOmitFifth(true)
         .build();
 
     try (final OutputStream out = Files.newOutputStream(Paths.get("output.mid"))) {

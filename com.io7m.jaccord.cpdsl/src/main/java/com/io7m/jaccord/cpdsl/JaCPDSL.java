@@ -19,6 +19,7 @@ package com.io7m.jaccord.cpdsl;
 import com.io7m.jaccord.chord_names.api.JaChordNamesType;
 import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaChordIntervals;
+import com.io7m.jaccord.core.JaChordInversions;
 import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.core.JaScale;
@@ -117,33 +118,146 @@ public final class JaCPDSL
   }
 
   /**
-   * A scale.
+   * A chord change.
+   *
+   * @param chord The chord
+   * @param beats The number of beats that the chord is held
+   *
+   * @return The chord change
    */
 
-  public final class Scale
+  public Change change(
+    final ChordTermType chord,
+    final int beats)
   {
-    private final JaNote root;
-    private final JaScaleNamed scale_named;
-    private final JaScale scale;
+    NullCheck.notNull(chord, "Chord");
+    return new Change(chord, beats);
+  }
 
-    private Scale(
-      final JaNote in_root,
-      final JaScaleNamed in_scale)
-    {
-      this.root = NullCheck.notNull(in_root, "Root");
-      this.scale_named = NullCheck.notNull(in_scale, "Scale");
-      this.scale = JaScale.of(this.root, this.scale_named.intervals());
+  /**
+   * Build a chord progression.
+   *
+   * @param changes The list of chord changes
+   *
+   * @return A chord progression
+   */
+
+  public Progression progression(
+    final Change... changes)
+  {
+    return new Progression(Vector.of(
+      NullCheck.notNull(changes, "Changes")));
+  }
+
+  /**
+   * Determine the triad at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic diatonic(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.TRIADS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
     }
 
-    @Override
-    public String toString()
-    {
-      final StringBuilder sb = new StringBuilder(32);
-      sb.append(this.root.noteName());
-      sb.append(" ");
-      sb.append(this.scale_named.name());
-      return sb.toString();
+    throw new UnimplementedCodeException();
+  }
+
+  /**
+   * Determine the inversion of the given chord.
+   *
+   * @param chord The chord
+   *
+   * @return The inversion of the chord
+   */
+
+  public ChordInversion inversion(
+    final ChordTermType chord)
+  {
+    NullCheck.notNull(chord, "Chord");
+    return new ChordInversion(chord);
+  }
+
+  /**
+   * Determine the secondary dominant of the given chord.
+   *
+   * @param chord The chord
+   *
+   * @return The secondary dominant of the chord
+   */
+
+  public ChordSecondaryDominant secondaryDominant(
+    final ChordTermType chord)
+  {
+    NullCheck.notNull(chord, "Chord");
+    return new ChordSecondaryDominant(chord);
+  }
+
+  /**
+   * Determine the seventh chord at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic diatonic7(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
     }
+
+    throw new UnimplementedCodeException();
+  }
+
+  /**
+   * Determine the ninth chord at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic diatonic9(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.NINTH_CHORDS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+    }
+
+    throw new UnimplementedCodeException();
   }
 
   /**
@@ -193,6 +307,88 @@ public final class JaCPDSL
      */
 
     VII
+  }
+
+  /**
+   * A chord term.
+   */
+
+  public interface ChordTermType
+  {
+    /**
+     * Evaluate and return the chord
+     *
+     * @return The evaluated chord
+     */
+
+    JaChord evaluate();
+
+    /**
+     * @return The type of chord term
+     */
+
+    Type type();
+
+    /**
+     * A value that specifies the type of chord term.
+     */
+
+    enum Type
+    {
+      /**
+       * A diatonic chord.
+       */
+
+      CHORD_DIATONIC,
+
+      /**
+       * A chromatically transposed chord.
+       */
+
+      CHORD_CHROMATIC_TRANSPOSE,
+
+      /**
+       * A secondary dominant chord.
+       */
+
+      CHORD_SECONDARY_DOMINANT,
+
+      /**
+       * The first inversion of a chord.
+       */
+
+      CHORD_INVERSION
+    }
+  }
+
+  /**
+   * A scale.
+   */
+
+  public final class Scale
+  {
+    private final JaNote root;
+    private final JaScaleNamed scale_named;
+    private final JaScale scale;
+
+    private Scale(
+      final JaNote in_root,
+      final JaScaleNamed in_scale)
+    {
+      this.root = NullCheck.notNull(in_root, "Root");
+      this.scale_named = NullCheck.notNull(in_scale, "Scale");
+      this.scale = JaScale.of(this.root, this.scale_named.intervals());
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.root.noteName());
+      sb.append(" ");
+      sb.append(this.scale_named.name());
+      return sb.toString();
+    }
   }
 
   /**
@@ -275,52 +471,6 @@ public final class JaCPDSL
   }
 
   /**
-   * A chord term.
-   */
-
-  public interface ChordTermType
-  {
-    /**
-     * A value that specifies the type of chord term.
-     */
-
-    enum Type
-    {
-      /**
-       * A diatonic chord.
-       */
-
-      CHORD_DIATONIC,
-
-      /**
-       * A chromatically transposed chord.
-       */
-
-      CHORD_CHROMATIC_TRANSPOSE,
-
-      /**
-       * A secondary dominant chord.
-       */
-
-      SECONDARY_DOMINANT,
-    }
-
-    /**
-     * Evaluate and return the chord
-     *
-     * @return The evaluated chord
-     */
-
-    JaChord evaluate();
-
-    /**
-     * @return The type of chord term
-     */
-
-    Type type();
-  }
-
-  /**
    * A diatonic chord.
    */
 
@@ -358,6 +508,50 @@ public final class JaCPDSL
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.chord.root().noteName());
       sb.append(JaCPDSL.this.names.name(this.chord.intervals()));
+      return sb.toString();
+    }
+  }
+
+  /**
+   * An inverted chord.
+   */
+
+  public final class ChordInversion implements ChordTermType
+  {
+    private final ChordTermType input;
+    private final JaChord output;
+
+    private ChordInversion(
+      final ChordTermType in_input)
+    {
+      this.input = NullCheck.notNull(in_input, "Chord");
+      this.output = this.evaluateEager();
+    }
+
+    @Override
+    public JaChord evaluate()
+    {
+      return this.output;
+    }
+
+    private JaChord evaluateEager()
+    {
+      final JaChord e = this.input.evaluate();
+      return JaChordInversions.invert(e);
+    }
+
+    @Override
+    public Type type()
+    {
+      return Type.CHORD_INVERSION;
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.output.root().noteName());
+      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -445,7 +639,7 @@ public final class JaCPDSL
     @Override
     public Type type()
     {
-      return Type.SECONDARY_DOMINANT;
+      return Type.CHORD_SECONDARY_DOMINANT;
     }
 
     @Override
@@ -456,133 +650,5 @@ public final class JaCPDSL
       sb.append(JaCPDSL.this.names.name(this.output.intervals()));
       return sb.toString();
     }
-  }
-
-  /**
-   * A chord change.
-   *
-   * @param chord The chord
-   * @param beats The number of beats that the chord is held
-   *
-   * @return The chord change
-   */
-
-  public Change change(
-    final ChordTermType chord,
-    final int beats)
-  {
-    NullCheck.notNull(chord, "Chord");
-    return new Change(chord, beats);
-  }
-
-  /**
-   * Build a chord progression.
-   *
-   * @param changes The list of chord changes
-   *
-   * @return A chord progression
-   */
-
-  public Progression progression(
-    final Change... changes)
-  {
-    return new Progression(Vector.of(
-      NullCheck.notNull(changes, "Changes")));
-  }
-
-  /**
-   * Determine the triad at the given degree of the given scale.
-   *
-   * @param scale  The scale
-   * @param degree The degree
-   *
-   * @return The diatonic chord
-   */
-
-  public ChordDiatonic diatonic(
-    final Scale scale,
-    final Degree degree)
-  {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
-
-    final Vector<JaChord> triads =
-      JaScaleHarmonization.harmonize(
-        JaScaleHarmonizationChordTypes.TRIADS, scale.scale);
-
-    if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
-    }
-
-    throw new UnimplementedCodeException();
-  }
-
-  /**
-   * Determine the secondary dominant of the given chord.
-   *
-   * @param chord The chord
-   *
-   * @return The secondary dominant of the chord
-   */
-
-  public ChordSecondaryDominant secondaryDominant(
-    final ChordTermType chord)
-  {
-    NullCheck.notNull(chord, "Chord");
-    return new ChordSecondaryDominant(chord);
-  }
-
-  /**
-   * Determine the seventh chord at the given degree of the given scale.
-   *
-   * @param scale  The scale
-   * @param degree The degree
-   *
-   * @return The diatonic chord
-   */
-
-  public ChordDiatonic diatonic7(
-    final Scale scale,
-    final Degree degree)
-  {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
-
-    final Vector<JaChord> triads =
-      JaScaleHarmonization.harmonize(
-        JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale.scale);
-
-    if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
-    }
-
-    throw new UnimplementedCodeException();
-  }
-
-  /**
-   * Determine the ninth chord at the given degree of the given scale.
-   *
-   * @param scale  The scale
-   * @param degree The degree
-   *
-   * @return The diatonic chord
-   */
-
-  public ChordDiatonic diatonic9(
-    final Scale scale,
-    final Degree degree)
-  {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
-
-    final Vector<JaChord> triads =
-      JaScaleHarmonization.harmonize(
-        JaScaleHarmonizationChordTypes.NINTH_CHORDS, scale.scale);
-
-    if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
-    }
-
-    throw new UnimplementedCodeException();
   }
 }

@@ -32,5 +32,20 @@ public interface JaCPDSLExporterConfigurationType
    */
 
   @Value.Parameter
-  boolean doubleRoot();
+  @Value.Default
+  default boolean doubleRoot()
+  {
+    return false;
+  }
+
+  /**
+   * @return {@code true} if the fifths of each chord should be omitted
+   */
+
+  @Value.Parameter
+  @Value.Default
+  default boolean omitFifth()
+  {
+    return false;
+  }
 }
