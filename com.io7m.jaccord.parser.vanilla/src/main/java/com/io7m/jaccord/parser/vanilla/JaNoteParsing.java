@@ -21,7 +21,7 @@ import com.io7m.jaccord.parser.api.JaAccidentalEncoding;
 import com.io7m.jaccord.parser.api.JaParseError;
 import com.io7m.jaccord.parser.api.JaParserConfigurationType;
 import com.io7m.jlexing.core.LexicalPosition;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
@@ -65,8 +65,8 @@ public final class JaNoteParsing
     final LexicalPosition<Path> position,
     final String text)
   {
-    NullCheck.notNull(config, "Config");
-    NullCheck.notNull(text, "Text");
+    Objects.requireNonNull(config, "Config");
+    Objects.requireNonNull(text, "Text");
 
     final Matcher matcher = createMatcher(config.accidentals(), text);
     if (!matcher.matches()) {

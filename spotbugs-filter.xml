@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <Match>
+    <Class name="com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration$Builder" />
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+  </Match>
+  <Match>
+    <Class name="com.io7m.jaccord.parser.api.JaScaleParserConfiguration$Builder" />
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+  </Match>
+  <Match>
+    <Class name="com.io7m.jaccord.parser.api.JaParseError$Builder"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+  <Match>
+    <Class name="com.io7m.jaccord.core.JaChordValidityError$Builder" />
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+  </Match>
+</FindBugsFilter>

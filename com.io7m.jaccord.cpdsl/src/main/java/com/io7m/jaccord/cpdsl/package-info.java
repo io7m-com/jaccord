@@ -18,6 +18,5 @@
  * Chord progression DSL.
  */
 
-@com.io7m.jnull.NonNullByDefault
 package com.io7m.jaccord.cpdsl;
 

@@ -19,7 +19,7 @@ package com.io7m.jaccord.scales.vanilla;
 import com.io7m.jaccord.core.JaScaleIntervals;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.spi.JaScaleProviderType;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
@@ -62,7 +62,7 @@ public final class JaScalesVanilla implements JaScaleProviderType
     try {
       final Properties props = new Properties();
       final URL url = JaScalesVanilla.class.getResource("scales.properties");
-      try (final InputStream stream = url.openStream()) {
+      try (InputStream stream = url.openStream()) {
         props.load(stream);
       }
       return props;
@@ -81,7 +81,7 @@ public final class JaScalesVanilla implements JaScaleProviderType
   public Optional<JaScaleNamed> scaleByID(
     final String id)
   {
-    NullCheck.notNull(id, "ID");
+    Objects.requireNonNull(id, "ID");
     return this.database.by_id.get(id).toJavaOptional();
   }
 
@@ -89,7 +89,7 @@ public final class JaScalesVanilla implements JaScaleProviderType
   public List<JaScaleNamed> scalesByIntervals(
     final JaScaleIntervals intervals)
   {
-    NullCheck.notNull(intervals, "Intervals");
+    Objects.requireNonNull(intervals, "Intervals");
     return this.database.by_intervals.getOrElse(intervals, List.empty());
   }
 
@@ -104,9 +104,9 @@ public final class JaScalesVanilla implements JaScaleProviderType
       final TreeMap<String, JaScaleNamed> in_by_id)
     {
       this.by_intervals =
-        NullCheck.notNull(in_by_intervals, "By Intervals");
+        Objects.requireNonNull(in_by_intervals, "By Intervals");
       this.by_id =
-        NullCheck.notNull(in_by_id, "By ID");
+        Objects.requireNonNull(in_by_id, "By ID");
     }
 
     private static JaScaleNamed parseScaleDefinition(
@@ -161,7 +161,7 @@ public final class JaScalesVanilla implements JaScaleProviderType
     static ScalesDatabase open(
       final Properties props)
     {
-      NullCheck.notNull(props, "Properties");
+      Objects.requireNonNull(props, "Properties");
 
       final Builder builder = new Builder();
 

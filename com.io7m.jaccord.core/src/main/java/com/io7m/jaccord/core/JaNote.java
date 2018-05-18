@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 
 /**
@@ -102,7 +102,7 @@ public enum JaNote
   JaNote(
     final String in_note_name)
   {
-    this.note_name = NullCheck.notNull(in_note_name, "Note name");
+    this.note_name = Objects.requireNonNull(in_note_name, "Note name");
   }
 
   /**

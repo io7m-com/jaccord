@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.List;
 import io.vavr.collection.TreeSet;
@@ -58,8 +58,8 @@ public final class JaScaleHarmonization
     final JaScaleHarmonizationChordTypes types,
     final JaScale scale)
   {
-    NullCheck.notNull(types, "Types");
-    NullCheck.notNull(scale, "Scale");
+    Objects.requireNonNull(types, "Types");
+    Objects.requireNonNull(scale, "Scale");
     return scale.notesOrdered().map(note -> harmonizeNote(types, scale, note));
   }
 
@@ -68,9 +68,9 @@ public final class JaScaleHarmonization
     final JaScale scale,
     final JaNote root)
   {
-    NullCheck.notNull(types, "Types");
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(root, "Note");
+    Objects.requireNonNull(types, "Types");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(root, "Note");
 
     switch (types) {
       case SUSPENDED_2_CHORDS:

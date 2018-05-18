@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.SortedSet;
 
@@ -205,7 +205,7 @@ public final class JaIntervals
   public static SortedSet<Integer> normalize(
     final SortedSet<Integer> intervals)
   {
-    NullCheck.notNull(intervals, "intervals");
+    Objects.requireNonNull(intervals, "intervals");
     return intervals.filter(i -> isWithinTwoOctaves(i) && isNotUnison(i));
   }
 

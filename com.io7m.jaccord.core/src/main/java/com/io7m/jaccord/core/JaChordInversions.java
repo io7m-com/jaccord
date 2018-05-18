@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.Vector;
@@ -43,7 +43,7 @@ public final class JaChordInversions
   public static JaChord invert(
     final JaChord chord)
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
 
     final SortedSet<Integer> intervals = chord.intervals().intervals();
     final Integer first = intervals.head();
@@ -78,7 +78,7 @@ public final class JaChordInversions
   public static Vector<JaChord> inversions(
     final JaChord chord)
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
 
     Vector<JaChord> inversions = Vector.empty();
     JaChord inversion = chord;

@@ -27,7 +27,7 @@ import com.io7m.jaccord.core.JaScaleHarmonization;
 import com.io7m.jaccord.core.JaScaleHarmonizationChordTypes;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.api.JaScales;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
@@ -53,7 +53,7 @@ public final class JaCPDSL
   private JaCPDSL(
     final JaChordNamesType in_names)
   {
-    this.names = NullCheck.notNull(in_names, "Names");
+    this.names = Objects.requireNonNull(in_names, "Names");
   }
 
   /**
@@ -90,8 +90,8 @@ public final class JaCPDSL
     final JaNote root,
     final String name)
   {
-    NullCheck.notNull(root, "Root");
-    NullCheck.notNull(name, "Name");
+    Objects.requireNonNull(root, "Root");
+    Objects.requireNonNull(name, "Name");
 
     final List<JaScaleNamed> matching = JaScales.scalesByID(name);
 
@@ -119,7 +119,7 @@ public final class JaCPDSL
     final ChordTermType chord,
     final int steps)
   {
-    return new ChordChromaticTranspose(chord, steps);
+    return new ChordChromaticTranspose(this, chord, steps);
   }
 
   /**
@@ -135,7 +135,7 @@ public final class JaCPDSL
     final ChordTermType chord,
     final ChromaticMediant mediant)
   {
-    return new ChordChromaticMediant(mediant, chord);
+    return new ChordChromaticMediant(this, mediant, chord);
   }
 
   /**
@@ -151,7 +151,7 @@ public final class JaCPDSL
     final ChordTermType chord,
     final int beats)
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
     return new Change(chord, beats);
   }
 
@@ -167,7 +167,7 @@ public final class JaCPDSL
     final Change... changes)
   {
     return new Progression(Vector.of(
-      NullCheck.notNull(changes, "Changes")));
+      Objects.requireNonNull(changes, "Changes")));
   }
 
   /**
@@ -183,15 +183,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.TRIADS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -210,15 +210,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.SUSPENDED_4_CHORDS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -237,15 +237,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.SUSPENDED_2_CHORDS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -262,8 +262,8 @@ public final class JaCPDSL
   public ChordInversion inversion(
     final ChordTermType chord)
   {
-    NullCheck.notNull(chord, "Chord");
-    return new ChordInversion(chord);
+    Objects.requireNonNull(chord, "Chord");
+    return new ChordInversion(this, chord);
   }
 
   /**
@@ -277,8 +277,8 @@ public final class JaCPDSL
   public ChordSecondaryDominant secondaryDominant(
     final ChordTermType chord)
   {
-    NullCheck.notNull(chord, "Chord");
-    return new ChordSecondaryDominant(chord);
+    Objects.requireNonNull(chord, "Chord");
+    return new ChordSecondaryDominant(this, chord);
   }
 
   /**
@@ -292,8 +292,8 @@ public final class JaCPDSL
   public ChordTritone tritone(
     final ChordTermType chord)
   {
-    NullCheck.notNull(chord, "Chord");
-    return new ChordTritone(chord);
+    Objects.requireNonNull(chord, "Chord");
+    return new ChordTritone(this, chord);
   }
 
   /**
@@ -308,7 +308,7 @@ public final class JaCPDSL
   public ChordTritone tritoneSecondaryDominant(
     final ChordTermType chord)
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
     return this.tritone(this.secondaryDominant(chord));
   }
 
@@ -325,15 +325,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -352,15 +352,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.NINTH_CHORDS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -379,15 +379,15 @@ public final class JaCPDSL
     final Scale scale,
     final Degree degree)
   {
-    NullCheck.notNull(scale, "Scale");
-    NullCheck.notNull(degree, "Degree");
+    Objects.requireNonNull(scale, "Scale");
+    Objects.requireNonNull(degree, "Degree");
 
     final Vector<JaChord> triads =
       JaScaleHarmonization.harmonize(
         JaScaleHarmonizationChordTypes.ELEVENTH_CHORDS, scale.scale);
 
     if (degree.ordinal() < triads.size()) {
-      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+      return new ChordDiatonic(this, triads.get(degree.ordinal()));
     }
 
     throw new UnimplementedCodeException();
@@ -408,7 +408,7 @@ public final class JaCPDSL
     final Set<Integer> add,
     final Map<Integer, Integer> replace)
   {
-    return new ChordAltered(input, add, replace);
+    return new ChordAltered(this, input, add, replace);
   }
 
   /**
@@ -424,7 +424,7 @@ public final class JaCPDSL
     final ChordTermType input,
     final Map<Integer, Integer> replace)
   {
-    return new ChordAltered(input, TreeSet.empty(), replace);
+    return new ChordAltered(this, input, TreeSet.empty(), replace);
   }
 
   /**
@@ -440,7 +440,7 @@ public final class JaCPDSL
     final ChordTermType input,
     final Set<Integer> add)
   {
-    return new ChordAltered(input, add, HashMap.empty());
+    return new ChordAltered(this, input, add, HashMap.empty());
   }
 
   /**
@@ -566,7 +566,7 @@ public final class JaCPDSL
    * A scale.
    */
 
-  public final class Scale
+  public static final class Scale
   {
     private final JaNote root;
     private final JaScaleNamed scale_named;
@@ -576,8 +576,8 @@ public final class JaCPDSL
       final JaNote in_root,
       final JaScaleNamed in_scale)
     {
-      this.root = NullCheck.notNull(in_root, "Root");
-      this.scale_named = NullCheck.notNull(in_scale, "Scale");
+      this.root = Objects.requireNonNull(in_root, "Root");
+      this.scale_named = Objects.requireNonNull(in_scale, "Scale");
       this.scale = JaScale.of(this.root, this.scale_named.intervals());
     }
 
@@ -614,14 +614,14 @@ public final class JaCPDSL
    * A chord progression.
    */
 
-  public final class Progression
+  public static final class Progression
   {
     private final Vector<Change> changes;
 
     private Progression(
       final Vector<Change> in_changes)
     {
-      this.changes = NullCheck.notNull(in_changes, "Changes");
+      this.changes = Objects.requireNonNull(in_changes, "Changes");
     }
 
     /**
@@ -646,7 +646,7 @@ public final class JaCPDSL
    * A chord change.
    */
 
-  public final class Change
+  public static final class Change
   {
     private final ChordTermType chord;
     private final int beats;
@@ -655,7 +655,7 @@ public final class JaCPDSL
       final ChordTermType in_chord,
       final int in_beats)
     {
-      this.chord = NullCheck.notNull(in_chord, "Chord");
+      this.chord = Objects.requireNonNull(in_chord, "Chord");
       this.beats = in_beats;
     }
 
@@ -693,20 +693,17 @@ public final class JaCPDSL
    * A diatonic chord.
    */
 
-  public final class ChordDiatonic implements ChordTermType
+  public static final class ChordDiatonic implements ChordTermType
   {
-    private final Scale scale;
-    private final Degree degree;
     private final JaChord chord;
+    private final JaCPDSL dsl;
 
     private ChordDiatonic(
-      final Scale in_scale,
-      final Degree in_degree,
+      final JaCPDSL in_dsl,
       final JaChord in_chord)
     {
-      this.scale = NullCheck.notNull(in_scale, "Scale");
-      this.degree = NullCheck.notNull(in_degree, "Degree");
-      this.chord = NullCheck.notNull(in_chord, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.chord = Objects.requireNonNull(in_chord, "Chord");
     }
 
     @Override
@@ -726,7 +723,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.chord.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.chord.intervals()));
+      sb.append(this.dsl.names.name(this.chord.intervals()));
       return sb.toString();
     }
   }
@@ -735,15 +732,18 @@ public final class JaCPDSL
    * An inverted chord.
    */
 
-  public final class ChordInversion implements ChordTermType
+  public static final class ChordInversion implements ChordTermType
   {
     private final ChordTermType input;
     private final JaChord output;
+    private final JaCPDSL dsl;
 
     private ChordInversion(
+      final JaCPDSL in_dsl,
       final ChordTermType in_input)
     {
-      this.input = NullCheck.notNull(in_input, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.input = Objects.requireNonNull(in_input, "Chord");
       this.output = this.evaluateEager();
     }
 
@@ -770,7 +770,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -810,18 +810,21 @@ public final class JaCPDSL
    * A chromatic-mediant subtituted chord.
    */
 
-  public final class ChordChromaticMediant implements ChordTermType
+  public static final class ChordChromaticMediant implements ChordTermType
   {
     private final ChordTermType input;
     private final JaChord output;
     private final ChromaticMediant mediant;
+    private final JaCPDSL dsl;
 
     private ChordChromaticMediant(
+      final JaCPDSL in_dsl,
       final ChromaticMediant in_mediant,
       final ChordTermType in_input)
     {
-      this.mediant = NullCheck.notNull(in_mediant, "Mediant");
-      this.input = NullCheck.notNull(in_input, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.mediant = Objects.requireNonNull(in_mediant, "Mediant");
+      this.input = Objects.requireNonNull(in_input, "Chord");
       this.output = this.evaluateEager();
     }
 
@@ -860,7 +863,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -869,15 +872,18 @@ public final class JaCPDSL
    * A tritone-subtituted chord.
    */
 
-  public final class ChordTritone implements ChordTermType
+  public static final class ChordTritone implements ChordTermType
   {
+    private final JaCPDSL dsl;
     private final ChordTermType input;
     private final JaChord output;
 
     private ChordTritone(
+      final JaCPDSL in_dsl,
       final ChordTermType in_input)
     {
-      this.input = NullCheck.notNull(in_input, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.input = Objects.requireNonNull(in_input, "Chord");
       this.output = this.evaluateEager();
     }
 
@@ -904,7 +910,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -913,21 +919,24 @@ public final class JaCPDSL
    * An altered chord.
    */
 
-  public final class ChordAltered implements ChordTermType
+  public static final class ChordAltered implements ChordTermType
   {
+    private final JaCPDSL dsl;
     private final ChordTermType input;
     private final JaChord output;
     private final Set<Integer> add;
     private final Map<Integer, Integer> replace;
 
     private ChordAltered(
+      final JaCPDSL in_dsl,
       final ChordTermType in_input,
       final Set<Integer> in_add,
       final Map<Integer, Integer> in_replace)
     {
-      this.input = NullCheck.notNull(in_input, "Chord");
-      this.add = NullCheck.notNull(in_add, "Add");
-      this.replace = NullCheck.notNull(in_replace, "Replace");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.input = Objects.requireNonNull(in_input, "Chord");
+      this.add = Objects.requireNonNull(in_add, "Add");
+      this.replace = Objects.requireNonNull(in_replace, "Replace");
       this.output = this.evaluateEager();
     }
 
@@ -959,7 +968,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -968,17 +977,20 @@ public final class JaCPDSL
    * A chromatically transposed chord.
    */
 
-  public final class ChordChromaticTranspose implements ChordTermType
+  public static final class ChordChromaticTranspose implements ChordTermType
   {
+    private final JaCPDSL dsl;
     private final ChordTermType input;
     private final int steps;
     private final JaChord output;
 
     private ChordChromaticTranspose(
+      final JaCPDSL in_dsl,
       final ChordTermType in_input,
       final int in_steps)
     {
-      this.input = NullCheck.notNull(in_input, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.input = Objects.requireNonNull(in_input, "Chord");
       this.steps = in_steps;
       this.output = this.evaluateEager();
     }
@@ -1006,7 +1018,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }
@@ -1015,15 +1027,18 @@ public final class JaCPDSL
    * A secondary dominant chord.
    */
 
-  public final class ChordSecondaryDominant implements ChordTermType
+  public static final class ChordSecondaryDominant implements ChordTermType
   {
+    private final JaCPDSL dsl;
     private final ChordTermType input;
     private final JaChord output;
 
     private ChordSecondaryDominant(
+      final JaCPDSL in_dsl,
       final ChordTermType in_input)
     {
-      this.input = NullCheck.notNull(in_input, "Chord");
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.input = Objects.requireNonNull(in_input, "Chord");
       this.output = this.evaluateEager();
     }
 
@@ -1055,7 +1070,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.output.root().noteName());
-      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
     }
   }

@@ -20,7 +20,7 @@ import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.cpdsl.JaCPDSL;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -68,8 +68,8 @@ public final class JaCPDSLExporter
     final JaCPDSLExporterConfiguration configuration,
     final JaCPDSL.Progression progression)
   {
-    NullCheck.notNull(configuration, "Configuration");
-    NullCheck.notNull(progression, "Progression");
+    Objects.requireNonNull(configuration, "Configuration");
+    Objects.requireNonNull(progression, "Progression");
 
     try {
       final Sequence sequence =

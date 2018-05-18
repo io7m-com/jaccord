@@ -18,6 +18,5 @@
  * Vanilla parser implementations.
  */
 
-@com.io7m.jnull.NonNullByDefault
 package com.io7m.jaccord.parser.vanilla;
 

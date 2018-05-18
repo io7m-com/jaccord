@@ -24,7 +24,7 @@ import com.io7m.jaccord.parser.api.JaScaleParserConfiguration;
 import com.io7m.jaccord.parser.api.JaScaleParserProviderType;
 import com.io7m.jaccord.parser.api.JaScaleParserType;
 import com.io7m.jlexing.core.LexicalPositionMutable;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import io.vavr.collection.Seq;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.Vector;
@@ -69,9 +69,9 @@ public final class JaScaleParsers implements JaScaleParserProviderType
       final JaScaleParserConfiguration in_configuration)
     {
       this.path =
-        NullCheck.notNull(in_path, "Path");
+        Objects.requireNonNull(in_path, "Path");
       this.config =
-        NullCheck.notNull(in_configuration, "Configuration");
+        Objects.requireNonNull(in_configuration, "Configuration");
       this.position =
         LexicalPositionMutable.create(0, 0, Optional.of(this.path));
     }
@@ -90,7 +90,7 @@ public final class JaScaleParsers implements JaScaleParserProviderType
     public Validation<Seq<JaParseError>, JaScale> parseLine(
       final String line)
     {
-      NullCheck.notNull(line, "Line");
+      Objects.requireNonNull(line, "Line");
 
       this.position.setLine(this.position.line() + 1);
 
@@ -98,7 +98,7 @@ public final class JaScaleParsers implements JaScaleParserProviderType
       final String[] pieces = WHITESPACE.split(line.trim());
       for (int index = 0; index < pieces.length; ++index) {
         final String segment =
-          NullCheck.notNull(pieces[index], "Segment");
+          Objects.requireNonNull(pieces[index], "Segment");
 
         results = results.append(
           JaNoteParsing.parseNote(

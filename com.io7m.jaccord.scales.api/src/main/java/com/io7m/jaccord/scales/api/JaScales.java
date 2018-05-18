@@ -19,7 +19,7 @@ package com.io7m.jaccord.scales.api;
 import com.io7m.jaccord.core.JaScaleIntervals;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.spi.JaScaleProviderType;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import io.vavr.collection.List;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
@@ -68,7 +68,7 @@ public final class JaScales
   public static List<JaScaleNamed> scalesByID(
     final String id)
   {
-    NullCheck.notNull(id, "ID");
+    Objects.requireNonNull(id, "ID");
 
     final ServiceLoader<JaScaleProviderType> loader =
       ServiceLoader.load(JaScaleProviderType.class);
@@ -94,7 +94,7 @@ public final class JaScales
   public static List<JaScaleNamed> scalesByIntervals(
     final JaScaleIntervals intervals)
   {
-    NullCheck.notNull(intervals, "Intervals");
+    Objects.requireNonNull(intervals, "Intervals");
 
     final ServiceLoader<JaScaleProviderType> loader =
       ServiceLoader.load(JaScaleProviderType.class);

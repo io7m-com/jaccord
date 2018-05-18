@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.SortedSet;
 
@@ -48,7 +48,7 @@ public final class JaChordSlashes
     final JaChord chord)
     throws JaExceptionChord
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
 
     final SortedSet<Integer> intervals = chord.intervals().intervals();
     final Integer first = intervals.head();

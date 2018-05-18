@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 
 /**
  * The type of exceptions raised by the package.
@@ -33,7 +33,7 @@ public abstract class JaException extends RuntimeException
   public JaException(
     final String message)
   {
-    super(NullCheck.notNull(message, "Message"));
+    super(Objects.requireNonNull(message, "Message"));
   }
 
   /**
@@ -48,8 +48,8 @@ public abstract class JaException extends RuntimeException
     final Throwable cause)
   {
     super(
-      NullCheck.notNull(message, "Message"),
-      NullCheck.notNull(cause, "Cause"));
+      Objects.requireNonNull(message, "Message"),
+      Objects.requireNonNull(cause, "Cause"));
   }
 
   /**
@@ -61,6 +61,6 @@ public abstract class JaException extends RuntimeException
   public JaException(
     final Throwable cause)
   {
-    super(NullCheck.notNull(cause, "Cause"));
+    super(Objects.requireNonNull(cause, "Cause"));
   }
 }

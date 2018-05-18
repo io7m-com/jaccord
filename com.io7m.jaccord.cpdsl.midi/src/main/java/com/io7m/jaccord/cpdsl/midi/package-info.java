@@ -18,6 +18,5 @@
  * Chord progression DSL MIDI utilities.
  */
 
-@com.io7m.jnull.NonNullByDefault
 package com.io7m.jaccord.cpdsl.midi;
 

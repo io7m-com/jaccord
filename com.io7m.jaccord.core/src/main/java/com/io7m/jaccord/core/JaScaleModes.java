@@ -16,7 +16,7 @@
 
 package com.io7m.jaccord.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
@@ -43,7 +43,7 @@ public final class JaScaleModes
   public static Vector<JaScale> modes(
     final JaScale scale)
   {
-    NullCheck.notNull(scale, "Scale");
+    Objects.requireNonNull(scale, "Scale");
     return scale.notesOrdered().tail().map(note -> buildMode(scale, note));
   }
 

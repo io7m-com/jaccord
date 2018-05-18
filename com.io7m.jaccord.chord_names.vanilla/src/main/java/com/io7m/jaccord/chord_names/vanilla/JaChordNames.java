@@ -17,9 +17,12 @@
 package com.io7m.jaccord.chord_names.vanilla;
 
 import com.io7m.jaccord.core.JaChordIntervals;
-import com.io7m.jnull.NullCheck;
+
+import java.util.HashMap;
+import java.util.Objects;
 import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;
+import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
@@ -67,7 +70,7 @@ public final class JaChordNames
   public static String name(
     final JaChordIntervals chord)
   {
-    NullCheck.notNull(chord, "Chord");
+    Objects.requireNonNull(chord, "Chord");
 
     final StringBuilder buffer = new StringBuilder(32);
     final SortedSet<Integer> notes = chord.intervalsNormalized();
@@ -644,66 +647,40 @@ public final class JaChordNames
       }
     }
 
-    add_intervals.forEach(i -> buffer.append(addTone(i.intValue())));
+    add_intervals.forEach(i -> buffer.append(addTone(i)));
     return buffer.toString().trim();
   }
 
-  private static String addTone(
-    final int interval)
+  private static final Map<Integer, String> CHORD_TONE_NAMES =
+    makeChordToneNames();
+
+  private static Map<Integer, String> makeChordToneNames()
   {
-    switch (interval) {
-      case 0:
-        return "";
-      case 1:
-        return "add♭2";
-      case 2:
-        return "add2";
-      case 3:
-        return "";
-      case 4:
-        return "";
-      case 5:
-        return "add4";
-      case 6:
-        return "add♯4";
-      case 7:
-        return "";
-      case 8:
-        return "add♭6";
-      case 9:
-        return "add6";
-      case 10:
-        return "add♭7";
-      case 11:
-        return "add7";
-      case 12:
-        return "";
-      case 13:
-        return "add♭9";
-      case 14:
-        return "add9";
-      case 15:
-        return "add♯9";
-      case 16:
-        return "add♭11";
-      case 17:
-        return "add11";
-      case 18:
-        return "add♯11";
-      case 19:
-        return "";
-      case 20:
-        return "add♭13";
-      case 21:
-        return "add13";
-      case 22:
-        return "add♭14";
-      case 23:
-        return "add14";
-      case 24:
-        return "";
-      default:
-        return "";
-    }
+    final HashMap<Integer, String> names = new HashMap<>(24);
+    names.put(1, "add♭2");
+    names.put(2, "add2");
+    names.put(5, "add4");
+    names.put(6, "add♯4");
+    names.put(8, "add♭6");
+    names.put(9, "add6");
+    names.put(10, "add♭7");
+    names.put(11, "add7");
+    names.put(13, "add♭9");
+    names.put(14, "add9");
+    names.put(15, "add♯9");
+    names.put(16, "add♭11");
+    names.put(17, "add11");
+    names.put(18, "add♯11");
+    names.put(20, "add♭13");
+    names.put(21, "add13");
+    names.put(22, "add♭14");
+    names.put(23, "add14");
+    return io.vavr.collection.HashMap.ofAll(names);
+  }
+
+  private static String addTone(
+    final Integer interval)
+  {
+    return CHORD_TONE_NAMES.getOrElse(interval, "");
   }
 }

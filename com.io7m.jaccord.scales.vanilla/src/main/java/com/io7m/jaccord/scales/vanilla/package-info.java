@@ -18,6 +18,4 @@
  * Vanilla scale provider.
  */
 
-@com.io7m.jnull.NonNullByDefault
 package com.io7m.jaccord.scales.vanilla;
-
