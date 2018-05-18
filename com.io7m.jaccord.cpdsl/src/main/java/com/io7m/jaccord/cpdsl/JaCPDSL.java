@@ -29,6 +29,7 @@ import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.api.JaScales;
 import com.io7m.jnull.NullCheck;
 import com.io7m.junreachable.UnimplementedCodeException;
+import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
@@ -122,6 +123,22 @@ public final class JaCPDSL
   }
 
   /**
+   * Substitute a chord with a chromatic mediant.
+   *
+   * @param mediant The type of mediant
+   * @param chord   The chord
+   *
+   * @return A substituted chord
+   */
+
+  public ChordTermType chromaticMediant(
+    final ChordTermType chord,
+    final ChromaticMediant mediant)
+  {
+    return new ChordChromaticMediant(mediant, chord);
+  }
+
+  /**
    * A chord change.
    *
    * @param chord The chord
@@ -181,6 +198,60 @@ public final class JaCPDSL
   }
 
   /**
+   * Determine the suspended 4th chord at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic sus4(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.SUSPENDED_4_CHORDS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+    }
+
+    throw new UnimplementedCodeException();
+  }
+
+  /**
+   * Determine the suspended 2nd chord at the given degree of the given scale.
+   *
+   * @param scale  The scale
+   * @param degree The degree
+   *
+   * @return The diatonic chord
+   */
+
+  public ChordDiatonic sus2(
+    final Scale scale,
+    final Degree degree)
+  {
+    NullCheck.notNull(scale, "Scale");
+    NullCheck.notNull(degree, "Degree");
+
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.SUSPENDED_2_CHORDS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return new ChordDiatonic(scale, degree, triads.get(degree.ordinal()));
+    }
+
+    throw new UnimplementedCodeException();
+  }
+
+  /**
    * Determine the inversion of the given chord.
    *
    * @param chord The chord
@@ -208,6 +279,37 @@ public final class JaCPDSL
   {
     NullCheck.notNull(chord, "Chord");
     return new ChordSecondaryDominant(chord);
+  }
+
+  /**
+   * Determine the tritone substitution of the given chord.
+   *
+   * @param chord The chord
+   *
+   * @return The tritone substitution of the chord
+   */
+
+  public ChordTritone tritone(
+    final ChordTermType chord)
+  {
+    NullCheck.notNull(chord, "Chord");
+    return new ChordTritone(chord);
+  }
+
+  /**
+   * Determine the tritone substitution of the secondary dominant of the given
+   * chord.
+   *
+   * @param chord The chord
+   *
+   * @return The tritone substitution of the secondary dominant of the chord
+   */
+
+  public ChordTritone tritoneSecondaryDominant(
+    final ChordTermType chord)
+  {
+    NullCheck.notNull(chord, "Chord");
+    return this.tritone(this.secondaryDominant(chord));
   }
 
   /**
@@ -441,10 +543,22 @@ public final class JaCPDSL
       CHORD_INVERSION,
 
       /**
+       * A chord substituted with a chord a tritone away.
+       */
+
+      CHORD_TRITONE,
+
+      /**
        * A chord altered with the replacement or addition of specific notes.
        */
 
-      CHORD_ALTERED
+      CHORD_ALTERED,
+
+      /**
+       * A chromatic mediant substitution of a given chord.
+       */
+
+      CHORD_CHROMATIC_MEDIANT
     }
   }
 
@@ -649,6 +763,140 @@ public final class JaCPDSL
     public Type type()
     {
       return Type.CHORD_INVERSION;
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.output.root().noteName());
+      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      return sb.toString();
+    }
+  }
+
+  /**
+   * The type of chromatic mediant.
+   */
+
+  public enum ChromaticMediant
+  {
+    /**
+     * The mediant a major third up.
+     */
+
+    MAJOR_UP,
+
+    /**
+     * The mediant a major third down.
+     */
+
+    MAJOR_DOWN,
+
+    /**
+     * The mediant a minor third up.
+     */
+
+    MINOR_UP,
+
+    /**
+     * The mediant a minor third down.
+     */
+
+    MINOR_DOWN
+  }
+
+  /**
+   * A chromatic-mediant subtituted chord.
+   */
+
+  public final class ChordChromaticMediant implements ChordTermType
+  {
+    private final ChordTermType input;
+    private final JaChord output;
+    private final ChromaticMediant mediant;
+
+    private ChordChromaticMediant(
+      final ChromaticMediant in_mediant,
+      final ChordTermType in_input)
+    {
+      this.mediant = NullCheck.notNull(in_mediant, "Mediant");
+      this.input = NullCheck.notNull(in_input, "Chord");
+      this.output = this.evaluateEager();
+    }
+
+    @Override
+    public JaChord evaluate()
+    {
+      return this.output;
+    }
+
+    private JaChord evaluateEager()
+    {
+      final JaChord e = this.input.evaluate();
+
+      switch (this.mediant) {
+        case MAJOR_UP:
+          return JaChord.of(e.root().stepBy(4), e.intervals());
+        case MAJOR_DOWN:
+          return JaChord.of(e.root().stepBy(-4), e.intervals());
+        case MINOR_UP:
+          return JaChord.of(e.root().stepBy(3), e.intervals());
+        case MINOR_DOWN:
+          return JaChord.of(e.root().stepBy(-3), e.intervals());
+      }
+
+      throw new UnreachableCodeException();
+    }
+
+    @Override
+    public Type type()
+    {
+      return Type.CHORD_CHROMATIC_MEDIANT;
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.output.root().noteName());
+      sb.append(JaCPDSL.this.names.name(this.output.intervals()));
+      return sb.toString();
+    }
+  }
+
+  /**
+   * A tritone-subtituted chord.
+   */
+
+  public final class ChordTritone implements ChordTermType
+  {
+    private final ChordTermType input;
+    private final JaChord output;
+
+    private ChordTritone(
+      final ChordTermType in_input)
+    {
+      this.input = NullCheck.notNull(in_input, "Chord");
+      this.output = this.evaluateEager();
+    }
+
+    @Override
+    public JaChord evaluate()
+    {
+      return this.output;
+    }
+
+    private JaChord evaluateEager()
+    {
+      final JaChord e = this.input.evaluate();
+      return JaChord.of(e.root().stepBy(6), e.intervals());
+    }
+
+    @Override
+    public Type type()
+    {
+      return Type.CHORD_TRITONE;
     }
 
     @Override

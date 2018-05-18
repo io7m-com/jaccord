@@ -30,19 +30,19 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.io7m.jaccord.core.JaNote.C;
+import static com.io7m.jaccord.core.JaNote.A;
 import static com.io7m.jaccord.core.JaNote.D;
-import static com.io7m.jaccord.core.JaNote.E;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.III;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
+import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VI;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VII;
 
-public final class JaCPDSLDemo
+public final class JaCPDSLDemo3
 {
-  private JaCPDSLDemo()
+  private JaCPDSLDemo3()
   {
 
   }
@@ -53,38 +53,31 @@ public final class JaCPDSLDemo
   {
     final JaCPDSL d = JaCPDSL.create();
 
-    final JaCPDSL.Scale base = d.scale(D, "Phrygian_Mode");
-    final JaCPDSL.Scale borrowed = d.scale(D, "Major");
+    final JaCPDSL.Scale base = d.scale(A, "Major");
+    final JaCPDSL.Scale target = d.scale(D, "Natural_Minor");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic(base, I), 4),
-        d.change(d.diatonic(base, I), 3),
+        d.change(d.diatonic(base, I), 7),
         d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
 
-        d.change(d.diatonic(base, I), 4),
-        d.change(d.diatonic(base, I), 3),
-        d.change(d.diatonic7(base, II), 1),
-
-        d.change(d.diatonic(base, I), 4),
-        d.change(d.diatonic(base, I), 3),
-        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
-
-        d.change(d.diatonic(base, I), 4),
-        d.change(d.diatonic(base, I), 3),
-        d.change(d.diatonic11(base, II), 1),
-
-        d.change(d.diatonic9(base, V), 3),
-        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, IV)), 6), 1),
-
-        d.change(d.diatonic9(base, IV), 3),
+        d.change(d.diatonic7(base, II), 7),
         d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, II)), 6), 1),
 
-        d.change(d.diatonic9(base, II), 3),
-        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, I)), 6), 1),
+        d.change(d.diatonic9(base, III), 7),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, III)), 6), 1),
 
-        d.change(d.alteredAddedReplaced(d.diatonic7(borrowed, I), TreeSet.of(JaIntervals.MINOR_TENTH), TreeMap.of(JaIntervals.MAJOR_SEVENTH, JaIntervals.MINOR_SEVENTH)), 3),
-        d.change(d.diatonic9(borrowed, VII), 1)
+        d.change(d.diatonic(base, VI), 7),
+        d.change(d.chromaticTranspose(d.secondaryDominant(d.diatonic7(base, VII)), 6), 1),
+
+        d.change(d.diatonic7(target, V), 4),
+        d.change(d.diatonic(target, I), 4),
+        d.change(d.diatonic7(target, V), 2),
+        d.change(d.diatonic9(target, VI), 2),
+        d.change(d.diatonic(target, VII), 2),
+        d.change(
+          d.chromaticTranspose(d.diatonic7(target, VII), 1),
+          2)
       );
 
     System.out.println(p);
@@ -95,7 +88,7 @@ public final class JaCPDSLDemo
         .setOmitFifth(true)
         .build();
 
-    try (final OutputStream out = Files.newOutputStream(Paths.get("output.mid"))) {
+    try (final OutputStream out = Files.newOutputStream(Paths.get("output_rising.mid"))) {
       final Sequence sequence =
         JaCPDSLExporter.exportWithConfiguration(configuration, p);
       MidiSystem.write(sequence, 1, out);

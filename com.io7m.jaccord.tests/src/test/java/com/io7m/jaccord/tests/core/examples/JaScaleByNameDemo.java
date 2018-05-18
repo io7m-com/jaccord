@@ -70,7 +70,7 @@ public final class JaScaleByNameDemo
 
       final Vector<JaChord> chords =
         JaScaleHarmonization.harmonize(
-          JaScaleHarmonizationChordTypes.NINTH_CHORDS, scale);
+          JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale);
 
       for (int index = 0; index < chords.size(); ++index) {
         final JaChord chord = chords.get(index);
