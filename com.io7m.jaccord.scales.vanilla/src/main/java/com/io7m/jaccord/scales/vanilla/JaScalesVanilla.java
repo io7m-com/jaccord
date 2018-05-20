@@ -19,8 +19,6 @@ package com.io7m.jaccord.scales.vanilla;
 import com.io7m.jaccord.core.JaScaleIntervals;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.spi.JaScaleProviderType;
-import java.util.Objects;
-import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
@@ -32,7 +30,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -67,7 +67,7 @@ public final class JaScalesVanilla implements JaScaleProviderType
       }
       return props;
     } catch (final IOException e) {
-      throw new UnreachableCodeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
@@ -139,21 +139,22 @@ public final class JaScalesVanilla implements JaScaleProviderType
       void addDefinition(
         final JaScaleNamed def)
       {
+        final JaScaleIntervals intervals = def.intervals();
         if (LOG.isTraceEnabled()) {
           LOG.trace(
             "registered scale: {} {}",
             def.id(),
-            def.intervals().intervals());
+            intervals.intervals());
         }
 
         final List<JaScaleNamed> defs;
-        if (this.by_intervals.containsKey(def.intervals())) {
-          defs = this.by_intervals.get(def.intervals()).get();
+        if (this.by_intervals.containsKey(intervals)) {
+          defs = this.by_intervals.get(intervals).get();
         } else {
           defs = List.of(def);
         }
 
-        this.by_intervals = this.by_intervals.put(def.intervals(), defs);
+        this.by_intervals = this.by_intervals.put(intervals, defs);
         this.by_id = this.by_id.put(def.id(), def);
       }
     }

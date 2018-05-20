@@ -19,6 +19,7 @@ package com.io7m.jaccord.core;
 import io.vavr.collection.SortedSet;
 import org.immutables.value.Value;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -44,16 +45,39 @@ public interface JaScaleIntervalsType
   default void checkPreconditions()
   {
     final SortedSet<Integer> is = this.intervals();
-    if (is.exists(i -> i.intValue() < 1 || i.intValue() >= 12)) {
+
+    try {
+      checkIntervalsValid(is);
+    } catch (final JaExceptionScaleInvalid e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+  /**
+   * Check that a given set of intervals is a valid scale. That is, all intervals
+   * are non-zero and less than 12.
+   *
+   * @param intervals The intervals
+   *
+   * @throws JaExceptionScaleInvalid If the intervals do not form a scale
+   */
+
+  static void checkIntervalsValid(final SortedSet<Integer> intervals)
+    throws JaExceptionScaleInvalid
+  {
+    Objects.requireNonNull(intervals, "Intervals");
+
+    if (intervals.exists(i -> i.intValue() < 1 || i.intValue() >= 12)) {
+      final String line_separator = System.lineSeparator();
       throw new JaExceptionScaleInvalid(
         new StringBuilder(64)
           .append("Scale validity error.")
-          .append(System.lineSeparator())
+          .append(line_separator)
           .append("  Expected: All intervals must be in the range [1, 11]")
-          .append(System.lineSeparator())
+          .append(line_separator)
           .append("  Received: ")
-          .append(is.map(Object::toString).collect(Collectors.joining(" ")))
-          .append(System.lineSeparator())
+          .append(intervals.map(Object::toString).collect(Collectors.joining(" ")))
+          .append(line_separator)
           .toString());
     }
   }

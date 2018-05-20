@@ -20,7 +20,9 @@ import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.cpdsl.JaCPDSL;
+
 import java.util.Objects;
+
 import com.io7m.junreachable.UnreachableCodeException;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -62,109 +64,106 @@ public final class JaCPDSLExporter
    * @param progression   The input progression
    *
    * @return A MIDI sequence
+   *
+   * @throws InvalidMidiDataException If MIDI data could not be produced
    */
 
   public static Sequence exportWithConfiguration(
     final JaCPDSLExporterConfiguration configuration,
     final JaCPDSL.Progression progression)
+    throws InvalidMidiDataException
   {
     Objects.requireNonNull(configuration, "Configuration");
     Objects.requireNonNull(progression, "Progression");
 
-    try {
-      final Sequence sequence =
-        new Sequence(Sequence.SMPTE_30, 30);
-      final Track track = sequence.createTrack();
+    final Sequence sequence =
+      new Sequence(Sequence.SMPTE_30, 30);
+    final Track track = sequence.createTrack();
 
-      //
-      // Set tempo.
-      //
+    //
+    // Set tempo.
+    //
 
-      {
-        final long w = microSecondsForQuarterNoteAtTempo(120);
-        System.out.println("Tempo: " + w);
-
-        final MetaMessage mt = new MetaMessage();
-        final byte[] bt = {
-          (byte) ((w >>> 16) & 0xffL),
-          (byte) ((w >>> 8) & 0xffL),
-          (byte) (w & 0xffL),
-        };
-        mt.setMessage(0x51, bt, 3);
-        final MidiEvent me = new MidiEvent(mt, 0L);
-        track.add(me);
-      }
-
-      //
-      // Set time signature.
-      //
-
-      {
-        final MetaMessage mt = new MetaMessage();
-        final byte[] bt = {
-          (byte) 0x4,
-          (byte) 0x2,
-          (byte) 24,
-          (byte) 8,
-        };
-        mt.setMessage(0x58, bt, 4);
-        final MidiEvent me = new MidiEvent(mt, 0L);
-        track.add(me);
-      }
-
-      //
-      // Set track name.
-      //
-
-      {
-        final MetaMessage mt = new MetaMessage();
-        final String name = "Piano";
-        mt.setMessage(
-          0x03,
-          name.getBytes(StandardCharsets.US_ASCII),
-          name.length());
-        final MidiEvent me = new MidiEvent(mt, 0L);
-        track.add(me);
-      }
-
-      //
-      // Enable omni.
-      //
-
-      {
-        final ShortMessage mm = new ShortMessage();
-        mm.setMessage(0xB0, 0x7D, 0x00);
-        final MidiEvent me = new MidiEvent(mm, 0L);
-        track.add(me);
-      }
-
-      //
-      // Enable polyphony.
-      //
-
-      {
-        final ShortMessage mm = new ShortMessage();
-        mm.setMessage(0xB0, 0x7F, 0x00);
-        final MidiEvent me = new MidiEvent(mm, 0L);
-        track.add(me);
-      }
-
-      //
-      // Set instrument to piano.
-      //
-
-      {
-        final ShortMessage mm = new ShortMessage();
-        mm.setMessage(0xC0, 0x00, 0x00);
-        final MidiEvent me = new MidiEvent(mm, 0L);
-        track.add(me);
-      }
-
-      exportProgression(configuration, track, progression);
-      return sequence;
-    } catch (final InvalidMidiDataException e) {
-      throw new UnreachableCodeException(e);
+    {
+      final long w = microSecondsForQuarterNoteAtTempo(120);
+      final MetaMessage mt = new MetaMessage();
+      final byte[] bt = {
+        (byte) ((w >>> 16) & 0xffL),
+        (byte) ((w >>> 8) & 0xffL),
+        (byte) (w & 0xffL),
+      };
+      mt.setMessage(0x51, bt, 3);
+      final MidiEvent me = new MidiEvent(mt, 0L);
+      track.add(me);
     }
+
+    //
+    // Set time signature.
+    //
+
+    {
+      final MetaMessage mt = new MetaMessage();
+      final byte[] bt = {
+        (byte) 0x4,
+        (byte) 0x2,
+        (byte) 24,
+        (byte) 8,
+      };
+      mt.setMessage(0x58, bt, 4);
+      final MidiEvent me = new MidiEvent(mt, 0L);
+      track.add(me);
+    }
+
+    //
+    // Set track name.
+    //
+
+    {
+      final MetaMessage mt = new MetaMessage();
+      final String name = "Piano";
+      mt.setMessage(
+        0x03,
+        name.getBytes(StandardCharsets.US_ASCII),
+        name.length());
+      final MidiEvent me = new MidiEvent(mt, 0L);
+      track.add(me);
+    }
+
+    //
+    // Enable omni.
+    //
+
+    {
+      final ShortMessage mm = new ShortMessage();
+      mm.setMessage(0xB0, 0x7D, 0x00);
+      final MidiEvent me = new MidiEvent(mm, 0L);
+      track.add(me);
+    }
+
+    //
+    // Enable polyphony.
+    //
+
+    {
+      final ShortMessage mm = new ShortMessage();
+      mm.setMessage(0xB0, 0x7F, 0x00);
+      final MidiEvent me = new MidiEvent(mm, 0L);
+      track.add(me);
+    }
+
+    //
+    // Set instrument to piano.
+    //
+
+    {
+      final ShortMessage mm = new ShortMessage();
+      mm.setMessage(0xC0, 0x00, 0x00);
+      final MidiEvent me = new MidiEvent(mm, 0L);
+      track.add(me);
+    }
+
+    exportProgression(configuration, track, progression);
+    return sequence;
   }
 
   /**
@@ -175,10 +174,13 @@ public final class JaCPDSLExporter
    * @param progression The input progression
    *
    * @return A MIDI sequence
+   *
+   * @throws InvalidMidiDataException If MIDI data could not be produced
    */
 
   public static Sequence export(
     final JaCPDSL.Progression progression)
+    throws InvalidMidiDataException
   {
     return exportWithConfiguration(DEFAULT_CONFIGURATION, progression);
   }
@@ -187,6 +189,7 @@ public final class JaCPDSLExporter
     final JaCPDSLExporterConfiguration configuration,
     final Track track,
     final JaCPDSL.Progression progression)
+    throws InvalidMidiDataException
   {
     long time = 0L;
     final long whole = 1800L;
@@ -203,15 +206,11 @@ public final class JaCPDSLExporter
     // Set end of track.
     //
 
-    try {
-      final MetaMessage mt = new MetaMessage();
-      final byte[] bet = {};
-      mt.setMessage(0x2F, bet, 0);
-      final MidiEvent me = new MidiEvent(mt, time);
-      track.add(me);
-    } catch (final InvalidMidiDataException e) {
-      throw new UnreachableCodeException(e);
-    }
+    final MetaMessage mt = new MetaMessage();
+    final byte[] bet = {};
+    mt.setMessage(0x2F, bet, 0);
+    final MidiEvent me = new MidiEvent(mt, time);
+    track.add(me);
   }
 
   private static void addChord(
@@ -220,6 +219,7 @@ public final class JaCPDSLExporter
     final long time,
     final long time_end,
     final JaChord chord)
+    throws InvalidMidiDataException
   {
     final int root = toMidiNote(chord.root());
 
@@ -246,32 +246,28 @@ public final class JaCPDSLExporter
     final long time,
     final long time_end,
     final int note)
+    throws InvalidMidiDataException
   {
-    try {
-      //
-      // Note on.
-      //
+    //
+    // Note on.
+    //
 
-      {
-        final ShortMessage mm = new ShortMessage();
-        mm.setMessage(0x90, note, 0x7f);
-        final MidiEvent me = new MidiEvent(mm, time);
-        track.add(me);
-      }
+    {
+      final ShortMessage mm = new ShortMessage();
+      mm.setMessage(0x90, note, 0x7f);
+      final MidiEvent me = new MidiEvent(mm, time);
+      track.add(me);
+    }
 
-      //
-      // Note off.
-      //
+    //
+    // Note off.
+    //
 
-      {
-        final ShortMessage mm = new ShortMessage();
-        mm.setMessage(0x80, note, 0x00);
-        final MidiEvent me = new MidiEvent(mm, time_end);
-        track.add(me);
-      }
-
-    } catch (final InvalidMidiDataException e) {
-      throw new UnreachableCodeException(e);
+    {
+      final ShortMessage mm = new ShortMessage();
+      mm.setMessage(0x80, note, 0x00);
+      final MidiEvent me = new MidiEvent(mm, time_end);
+      track.add(me);
     }
   }
 

@@ -22,7 +22,7 @@ import java.util.Objects;
  * The type of exceptions raised by the package.
  */
 
-public abstract class JaException extends RuntimeException
+public abstract class JaException extends Exception
 {
   /**
    * Construct an exception.

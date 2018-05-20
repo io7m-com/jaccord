@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
+
   <Match>
-    <Class name="com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration$Builder" />
-    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Class name="~com\.io7m\.jaccord\..+\$InitShim"/>
+    <Bug pattern="PME_POOR_MANS_ENUM"/>
   </Match>
+
   <Match>
-    <Class name="com.io7m.jaccord.parser.api.JaScaleParserConfiguration$Builder" />
-    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Class name="~com\.io7m\.jaccord\..+\$Builder"/>
+    <Or>
+      <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+      <Bug pattern="ITC_INHERITANCE_TYPE_CHECKING"/>
+      <Bug pattern="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS"/>
+    </Or>
   </Match>
+
   <Match>
-    <Class name="com.io7m.jaccord.parser.api.JaParseError$Builder"/>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+    <Or>
+      <Class name="com.io7m.jaccord.core.JaChord"/>
+      <Class name="com.io7m.jaccord.core.JaChordIntervals"/>
+      <Class name="com.io7m.jaccord.core.JaChordSlash"/>
+      <Class name="com.io7m.jaccord.core.JaChordValidityError"/>
+      <Class name="com.io7m.jaccord.core.JaScale"/>
+      <Class name="com.io7m.jaccord.core.JaScaleIntervals"/>
+      <Class name="com.io7m.jaccord.core.JaScaleNamed"/>
+      <Class name="com.io7m.jaccord.cpdsl.midi.JaCPDSLExporterConfiguration"/>
+      <Class name="com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration"/>
+      <Class name="com.io7m.jaccord.parser.api.JaScaleParserConfiguration"/>
+      <Class name="com.io7m.jaccord.parser.api.JaParseError"/>
+    </Or>
   </Match>
+
   <Match>
-    <Class name="com.io7m.jaccord.core.JaChordValidityError$Builder" />
-    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Class name="com.io7m.jaccord.scales.vanilla.JaScalesVanilla"/>
+    <Method name="loadScaleData"/>
+    <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
   </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.io7m.jaccord.core.JaNote"/>
+      <Class name="com.io7m.jaccord.core.JaChordInversions"/>
+      <Class name="com.io7m.jaccord.cpdsl.JaCPDSL"/>
+      <Class name="com.io7m.jaccord.cpdsl.midi.JaCPDSLExporter"/>
+    </Or>
+    <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Method name="checkPreconditions"/>
+    <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Bug pattern="OCP_OVERLY_CONCRETE_PARAMETER"/>
+      <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
+      <Bug pattern="CRLF_INJECTION_LOGS"/>
+    </Or>
+  </Match>
+
 </FindBugsFilter>

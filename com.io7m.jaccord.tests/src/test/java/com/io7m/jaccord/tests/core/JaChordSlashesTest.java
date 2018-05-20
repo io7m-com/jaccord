@@ -20,6 +20,7 @@ import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaChordIntervals;
 import com.io7m.jaccord.core.JaChordSlash;
 import com.io7m.jaccord.core.JaChordSlashes;
+import com.io7m.jaccord.core.JaExceptionChord;
 import com.io7m.jaccord.core.JaNote;
 import io.vavr.collection.TreeSet;
 import org.junit.jupiter.api.Assertions;
@@ -31,6 +32,7 @@ public final class JaChordSlashesTest
 {
   @Test
   public void testTooFewNotes()
+    throws JaExceptionChord
   {
     final JaChord chord =
       JaChord.of(JaNote.C, JaChordIntervals.of(TreeSet.of(Integer.valueOf(3))));
@@ -43,6 +45,7 @@ public final class JaChordSlashesTest
 
   @Test
   public void testSlashMajor7()
+    throws JaExceptionChord
   {
     final JaChord chord =
       JaChord.of(

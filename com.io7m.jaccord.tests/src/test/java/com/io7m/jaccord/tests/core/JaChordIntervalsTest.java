@@ -18,6 +18,7 @@ package com.io7m.jaccord.tests.core;
 
 import com.io7m.jaccord.core.JaChordIntervals;
 import com.io7m.jaccord.core.JaExceptionChord;
+import com.io7m.jaccord.core.JaExceptionChordInvalid;
 import io.vavr.collection.TreeSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,9 @@ public final class JaChordIntervalsTest
   @Test
   public void testOutOfRange()
   {
-    final JaExceptionChord ex =
+    final IllegalArgumentException ex =
       Assertions.assertThrows(
-        JaExceptionChord.class,
+        IllegalArgumentException.class,
         () -> {
           JaChordIntervals.of(
             TreeSet.of(
@@ -44,21 +45,25 @@ public final class JaChordIntervalsTest
         });
 
     Assertions.assertTrue(
+      ex.getCause() instanceof JaExceptionChordInvalid);
+    Assertions.assertTrue(
       ex.getMessage().contains("Out-of-range chord intervals"));
   }
 
   @Test
   public void testMalformedChord()
   {
-    final JaExceptionChord ex =
+    final IllegalArgumentException ex =
       Assertions.assertThrows(
-        JaExceptionChord.class,
+        IllegalArgumentException.class,
         () -> {
           JaChordIntervals.of(
             TreeSet.of(
               Integer.valueOf(12)));
         });
 
+    Assertions.assertTrue(
+      ex.getCause() instanceof JaExceptionChordInvalid);
     Assertions.assertTrue(
       ex.getMessage().contains("Malformed chord intervals"));
   }

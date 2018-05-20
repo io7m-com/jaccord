@@ -62,18 +62,17 @@ public final class JaScaleParsers implements JaScaleParserProviderType
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");
     private final JaScaleParserConfiguration config;
     private final LexicalPositionMutable<Path> position;
-    private final Path path;
 
     private Parser(
       final Path in_path,
       final JaScaleParserConfiguration in_configuration)
     {
-      this.path =
-        Objects.requireNonNull(in_path, "Path");
+      Objects.requireNonNull(in_path, "Path");
+
       this.config =
         Objects.requireNonNull(in_configuration, "Configuration");
       this.position =
-        LexicalPositionMutable.create(0, 0, Optional.of(this.path));
+        LexicalPositionMutable.create(0, 0, Optional.of(in_path));
     }
 
     private static Validation<Seq<JaParseError>, JaScale> buildScale(

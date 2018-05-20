@@ -20,6 +20,7 @@ import com.io7m.jaccord.cpdsl.JaCPDSL;
 import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporter;
 import com.io7m.jaccord.cpdsl.midi.JaCPDSLExporterConfiguration;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public final class JaCPDSLDemo2
 
   public static void main(
     final String[] args)
-    throws IOException
+    throws IOException, InvalidMidiDataException
   {
     final JaCPDSL d = JaCPDSL.create();
 

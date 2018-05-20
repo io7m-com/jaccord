@@ -204,14 +204,14 @@ public final class JaChordNames
           notes.removeAll(remove));
       }
 
-      buffer.append("6");
+      buffer.append('6');
       return addTones(
         buffer,
         FifthBehaviour.DO_NOT_IGNORE_FIFTHS,
         notes.removeAll(remove));
     }
 
-    buffer.append("M");
+    buffer.append('M');
     return addTones(
       buffer,
       FifthBehaviour.DO_NOT_IGNORE_FIFTHS,
@@ -348,7 +348,7 @@ public final class JaChordNames
           notes.removeAll(remove));
       }
 
-      buffer.append("9");
+      buffer.append('9');
       return addTones(
         buffer,
         FifthBehaviour.DO_NOT_IGNORE_FIFTHS,
@@ -393,7 +393,7 @@ public final class JaChordNames
         notes.removeAll(remove));
     }
 
-    buffer.append("7");
+    buffer.append('7');
     return addTones(
       buffer,
       FifthBehaviour.DO_NOT_IGNORE_FIFTHS,
@@ -434,7 +434,7 @@ public final class JaChordNames
         notes.removeAll(remove));
     }
 
-    buffer.append("m");
+    buffer.append('m');
     return addTones(
       buffer,
       FifthBehaviour.DO_NOT_IGNORE_FIFTHS,

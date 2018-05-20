@@ -604,7 +604,7 @@ public final class JaCPDSL
     {
       final StringBuilder sb = new StringBuilder(32);
       sb.append(this.root.noteName());
-      sb.append(" ");
+      sb.append(' ');
       sb.append(this.scale_named.name());
       return sb.toString();
     }
@@ -681,10 +681,10 @@ public final class JaCPDSL
     public String toString()
     {
       final StringBuilder sb = new StringBuilder(32);
-      sb.append(this.chord.toString());
+      sb.append(this.chord);
       sb.append(" (");
       sb.append(this.beats);
-      sb.append(")");
+      sb.append(')');
       return sb.toString();
     }
   }

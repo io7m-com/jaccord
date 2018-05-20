@@ -70,19 +70,20 @@ public final class JaNoteParsing
 
     final Matcher matcher = createMatcher(config.accidentals(), text);
     if (!matcher.matches()) {
+      final String separator = System.lineSeparator();
       return Validation.invalid(
         Vector.of(
           JaParseError.of(
             position,
             new StringBuilder(64)
               .append("Could not parse note.")
-              .append(System.lineSeparator())
+              .append(separator)
               .append("  Expected: A note of the form: ")
               .append(matcher.pattern())
-              .append(System.lineSeparator())
+              .append(separator)
               .append("  Received: ")
               .append(text)
-              .append(System.lineSeparator())
+              .append(separator)
               .toString(),
             Optional.empty())));
     }

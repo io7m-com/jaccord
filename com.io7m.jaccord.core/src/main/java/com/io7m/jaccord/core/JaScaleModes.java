@@ -18,6 +18,7 @@ package com.io7m.jaccord.core;
 
 import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
+import io.vavr.collection.Set;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 
@@ -53,10 +54,11 @@ public final class JaScaleModes
   {
     TreeSet<Integer> intervals = TreeSet.empty();
     JaNote current = root;
-    for (int index = 0; index < scale.notes().size(); ++index) {
+    final Set<JaNote> nodes = scale.notes();
+    for (int index = 0; index < nodes.size(); ++index) {
       while (true) {
         current = current.next();
-        if (scale.notes().contains(current)) {
+        if (nodes.contains(current)) {
           final Integer interval = Integer.valueOf(root.intervalUpTo(current));
           if (interval.intValue() > 0) {
             intervals = intervals.add(interval);

@@ -18,6 +18,7 @@ package com.io7m.jaccord.parser.vanilla;
 
 import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaChordIntervals;
+import com.io7m.jaccord.core.JaChordIntervalsType;
 import com.io7m.jaccord.core.JaExceptionChord;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration;
@@ -65,18 +66,17 @@ public final class JaChordNoteParsers implements JaChordNoteParserProviderType
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");
     private final JaChordNoteParserConfiguration config;
     private final LexicalPositionMutable<Path> position;
-    private final Path path;
 
     private Parser(
       final Path in_path,
       final JaChordNoteParserConfiguration in_configuration)
     {
-      this.path =
-        Objects.requireNonNull(in_path, "Path");
+      Objects.requireNonNull(in_path, "Path");
+
       this.config =
         Objects.requireNonNull(in_configuration, "Configuration");
       this.position =
-        LexicalPositionMutable.create(0, 0, Optional.of(this.path));
+        LexicalPositionMutable.create(0, 0, Optional.of(in_path));
     }
 
     @Override
@@ -110,19 +110,20 @@ public final class JaChordNoteParsers implements JaChordNoteParserProviderType
 
       final Seq<JaNote> rest = notes.tail();
       if (rest.isEmpty()) {
+        final String separator = System.lineSeparator();
         return Validation.invalid(
           Vector.of(
             JaParseError.of(
               this.position.toImmutable(),
               new StringBuilder(64)
                 .append("Too few notes for chord.")
-                .append(System.lineSeparator())
+                .append(separator)
                 .append("  Expected: At least three notes.")
-                .append(System.lineSeparator())
+                .append(separator)
                 .append("  Received: ")
                 .append(notes.map(Object::toString).collect(Collectors.joining(
                   " ")))
-                .append(System.lineSeparator())
+                .append(separator)
                 .toString(),
               Optional.empty())));
       }
@@ -139,6 +140,7 @@ public final class JaChordNoteParsers implements JaChordNoteParserProviderType
       }
 
       try {
+        JaChordIntervalsType.checkValidChord(intervals);
         return Validation.valid(
           JaChord.of(root, JaChordIntervals.of(intervals)));
       } catch (final JaExceptionChord e) {

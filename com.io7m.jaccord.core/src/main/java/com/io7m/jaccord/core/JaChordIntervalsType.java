@@ -19,6 +19,7 @@ package com.io7m.jaccord.core;
 import io.vavr.collection.SortedSet;
 import org.immutables.value.Value;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -48,43 +49,62 @@ public interface JaChordIntervalsType
 
   /**
    * Check preconditions for the type
-   *
-   * @throws JaExceptionChord If the intervals do not form a chord
    */
 
   @Value.Check
   default void checkPreconditions()
   {
-    final SortedSet<Integer> norm = this.intervalsNormalized();
+    final SortedSet<Integer> intervals = this.intervals();
+
+    try {
+      checkValidChord(intervals);
+    } catch (final JaExceptionChordInvalid e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+  /**
+   * Check that a given set of intervals form a valid chord.
+   *
+   * @param intervals The intervals
+   *
+   * @throws JaExceptionChordInvalid If the intervals do not form a chord
+   */
+
+  static void checkValidChord(final SortedSet<Integer> intervals)
+    throws JaExceptionChordInvalid
+  {
+    Objects.requireNonNull(intervals, "Intervals");
+
+    final SortedSet<Integer> norm = JaIntervals.normalize(intervals);
+    final SortedSet<Integer> out_of_range =
+      intervals.filter(i -> i.intValue() < 0 || i.intValue() > 24);
+
+    final String line_separator = System.lineSeparator();
     if (norm.isEmpty()) {
       throw new JaExceptionChordInvalid(
         new StringBuilder(64)
           .append("Malformed chord intervals.")
-          .append(System.lineSeparator())
+          .append(line_separator)
           .append("  Expected: At least one non-unison interval")
-          .append(System.lineSeparator())
-          .append("  Received: ")
-          .append(this.intervalsNormalized()
-                    .map(Object::toString)
-                    .collect(Collectors.joining(" ")))
-          .append(System.lineSeparator())
+          .append(line_separator)
+          .append("  Received: Nothing")
+          .append(line_separator)
           .toString());
     }
 
-    final SortedSet<Integer> out_of_range =
-      this.intervals().filter(i -> i.intValue() < 0 || i.intValue() > 24);
     if (!out_of_range.isEmpty()) {
       throw new JaExceptionChordInvalid(
         new StringBuilder(64)
           .append("Out-of-range chord intervals.")
-          .append(System.lineSeparator())
+          .append(line_separator)
           .append("  Expected: All intervals to be in the range [0, 24]")
-          .append(System.lineSeparator())
+          .append(line_separator)
           .append("  Received: ")
-          .append(this.intervals()
+          .append(intervals
                     .map(Object::toString)
                     .collect(Collectors.joining(" ")))
-          .append(System.lineSeparator())
+          .append(line_separator)
           .toString());
     }
   }
