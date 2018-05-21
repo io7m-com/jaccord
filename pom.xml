@@ -182,7 +182,7 @@
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
           <configuration>
-            <excludeFilterFile>${project.parent.basedir}/spotbugs-filter.xml</excludeFilterFile>
+            <excludeFilterFile>spotbugs-filter.xml</excludeFilterFile>
           </configuration>
         </plugin>
       </plugins>
