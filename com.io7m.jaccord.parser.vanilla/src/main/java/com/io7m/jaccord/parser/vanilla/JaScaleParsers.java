@@ -24,13 +24,13 @@ import com.io7m.jaccord.parser.api.JaScaleParserConfiguration;
 import com.io7m.jaccord.parser.api.JaScaleParserProviderType;
 import com.io7m.jaccord.parser.api.JaScaleParserType;
 import com.io7m.jlexing.core.LexicalPositionMutable;
-import java.util.Objects;
 import io.vavr.collection.Seq;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.Vector;
 import io.vavr.control.Validation;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 

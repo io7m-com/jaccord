@@ -20,9 +20,6 @@ import com.io7m.jaccord.core.JaChord;
 import com.io7m.jaccord.core.JaIntervals;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.cpdsl.JaCPDSL;
-
-import java.util.Objects;
-
 import com.io7m.junreachable.UnreachableCodeException;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -32,6 +29,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * Functions for exporting progressions to MIDI.

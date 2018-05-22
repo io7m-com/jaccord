@@ -16,8 +16,9 @@
 
 package com.io7m.jaccord.core;
 
-import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
+
+import java.util.Objects;
 
 /**
  * A note, otherwise known as a <i>pitch class</i>.

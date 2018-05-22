@@ -16,18 +16,21 @@
 
 package com.io7m.jaccord.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import io.vavr.collection.SortedSet;
 import org.immutables.value.Value;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * The type of scale intervals.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaScaleIntervalsType
 {
   /**

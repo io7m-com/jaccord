@@ -16,11 +16,12 @@
 
 package com.io7m.jaccord.core;
 
-import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.Set;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
+
+import java.util.Objects;
 
 /**
  * Functions to calculate modes from a given scale.

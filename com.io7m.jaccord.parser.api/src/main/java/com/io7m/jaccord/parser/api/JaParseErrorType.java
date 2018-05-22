@@ -16,20 +16,22 @@
 
 package com.io7m.jaccord.parser.api;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaccord.core.JaErrorType;
-import com.io7m.jaccord.core.JaImmutableStyleType;
 import com.io7m.jlexing.core.LexicalPosition;
 import org.immutables.value.Value;
 
 import java.nio.file.Path;
 import java.util.Optional;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * The type of parse errors.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaParseErrorType extends JaErrorType
 {
   /**

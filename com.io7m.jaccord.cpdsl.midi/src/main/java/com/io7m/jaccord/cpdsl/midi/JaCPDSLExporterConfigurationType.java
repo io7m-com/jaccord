@@ -16,15 +16,17 @@
 
 package com.io7m.jaccord.cpdsl.midi;
 
-import com.io7m.jaccord.core.JaImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * Configuration values for MIDI exporters.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaCPDSLExporterConfigurationType
 {
   /**

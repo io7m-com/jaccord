@@ -16,10 +16,10 @@
 
 package com.io7m.jaccord.core;
 
-import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.SortedSet;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**

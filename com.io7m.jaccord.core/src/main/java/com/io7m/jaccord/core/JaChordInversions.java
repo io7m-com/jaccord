@@ -16,10 +16,11 @@
 
 package com.io7m.jaccord.core;
 
-import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.Vector;
+
+import java.util.Objects;
 
 /**
  * Functions to calculate inversions of chords.

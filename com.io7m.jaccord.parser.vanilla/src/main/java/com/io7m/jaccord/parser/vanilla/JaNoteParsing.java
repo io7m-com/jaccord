@@ -21,13 +21,13 @@ import com.io7m.jaccord.parser.api.JaAccidentalEncoding;
 import com.io7m.jaccord.parser.api.JaParseError;
 import com.io7m.jaccord.parser.api.JaParserConfigurationType;
 import com.io7m.jlexing.core.LexicalPosition;
-import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
 import io.vavr.control.Validation;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

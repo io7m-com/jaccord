@@ -16,16 +16,19 @@
 
 package com.io7m.jaccord.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import io.vavr.collection.Set;
 import io.vavr.collection.Vector;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of scales.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaScaleType
 {
   /**

@@ -16,16 +16,19 @@
 
 package com.io7m.jaccord.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.util.Optional;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of errors encountered when trying to construct invalid chords.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaChordValidityErrorType extends JaErrorType
 {
   @Override

@@ -16,14 +16,17 @@
 
 package com.io7m.jaccord.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * A "slash" chord; a chord over a given bass note.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaChordSlashType
 {
   /**

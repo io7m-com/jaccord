@@ -16,15 +16,16 @@
 
 package com.io7m.jaccord.parser.api;
 
-import com.io7m.jaccord.core.JaImmutableStyleType;
-import org.immutables.value.Value;
+import com.io7m.immutables.styles.ImmutablesStyleType;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of configurations for scale parsers.
  */
 
-@JaImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface JaScaleParserConfigurationType
   extends JaParserConfigurationType
 {
