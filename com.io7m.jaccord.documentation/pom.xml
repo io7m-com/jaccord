@@ -233,7 +233,7 @@
         </executions>
       </plugin>
 
-      <!-- Unpack the documentation archive to the parent's generated site staging directory. -->
+      <!-- Unpack the documentation archive to the parent's generated site minisite directory. -->
       <!-- This is arguably abusive, but there appears to be no other way to achieve it. -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -250,7 +250,7 @@
               <verbose>true</verbose>
               <fileset>
                 <directory>${project.build.directory}/${project.artifactId}-${project.version}.zip/${project.artifactId}-${project.version}/</directory>
-                <outputDirectory>${project.parent.build.directory}/staging/documentation/</outputDirectory>
+                <outputDirectory>${project.parent.build.directory}/minisite/documentation/</outputDirectory>
               </fileset>
             </configuration>
           </execution>
