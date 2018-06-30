@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor</artifactId>
-    <version>3.0.0-beta0006</version>
+    <version>3.0.0-beta0007</version>
   </parent>
 
   <groupId>com.io7m.jaccord</groupId>
