@@ -2,6 +2,7 @@ package com.io7m.jaccord.tests.core.examples;
 
 import com.io7m.jaccord.chord_names.vanilla.JaChordNames;
 import com.io7m.jaccord.core.JaChord;
+import com.io7m.jaccord.core.JaChordInversions;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.core.JaScale;
 import com.io7m.jaccord.core.JaScaleHarmonization;
@@ -82,6 +83,15 @@ public final class JaScaleByNameDemo
           chord.root().noteName(),
           r_name,
           chord.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
+
+        JaChordInversions.inversions(chord).forEach(inversion -> {
+          System.out.printf(
+            "    %-2s : %s%s (%s)\n",
+            inversion.root().noteName(),
+            inversion.root().noteName(),
+            r_name,
+            inversion.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
+        });
       }
     });
   }

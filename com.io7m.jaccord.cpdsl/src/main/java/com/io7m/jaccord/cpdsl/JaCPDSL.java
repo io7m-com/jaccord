@@ -27,18 +27,20 @@ import com.io7m.jaccord.core.JaScaleHarmonization;
 import com.io7m.jaccord.core.JaScaleHarmonizationChordTypes;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.scales.api.JaScales;
-import java.util.Objects;
 import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.HashMap;
+import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
+import io.vavr.collection.Traversable;
 import io.vavr.collection.TreeSet;
 import io.vavr.collection.Vector;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
@@ -171,6 +173,21 @@ public final class JaCPDSL
   }
 
   /**
+   * Build a chord progression.
+   *
+   * @param changes The list of chord changes
+   *
+   * @return A chord progression
+   */
+
+  public Progression progressionOfAll(
+    final Traversable<Change> changes)
+  {
+    return new Progression(Vector.ofAll(
+      Objects.requireNonNull(changes, "Changes")));
+  }
+
+  /**
    * Determine the triad at the given degree of the given scale.
    *
    * @param scale  The scale
@@ -297,8 +314,7 @@ public final class JaCPDSL
   }
 
   /**
-   * Determine the tritone substitution of the secondary dominant of the given
-   * chord.
+   * Determine the tritone substitution of the secondary dominant of the given chord.
    *
    * @param chord The chord
    *
@@ -443,6 +459,28 @@ public final class JaCPDSL
     return new ChordAltered(this, input, add, HashMap.empty());
   }
 
+  public ChordTermType chromaticPassing(
+    final ChordDiatonic chord_0,
+    final ChordDiatonic chord_1,
+    final JaNote intermediate_root)
+  {
+    return new ChordChromaticPassing(this, chord_0, chord_1, intermediate_root);
+  }
+
+  public JaNote noteOfDegree(
+    final Scale scale,
+    final Degree degree)
+  {
+    final Vector<JaChord> triads =
+      JaScaleHarmonization.harmonize(JaScaleHarmonizationChordTypes.TRIADS, scale.scale);
+
+    if (degree.ordinal() < triads.size()) {
+      return triads.get(degree.ordinal()).root();
+    }
+
+    throw new UnimplementedCodeException();
+  }
+
   /**
    * A scale degree.
    */
@@ -489,7 +527,100 @@ public final class JaCPDSL
      * The seventh scale degree.
      */
 
-    VII
+    VII;
+
+    /**
+     * @param index The integer index
+     *
+     * @return The scale degree for the given integer index
+     */
+
+    public static Degree ofInt(final int index)
+    {
+      switch (index) {
+        case 1:
+          return I;
+        case 2:
+          return II;
+        case 3:
+          return III;
+        case 4:
+          return IV;
+        case 5:
+          return V;
+        case 6:
+          return VI;
+        case 7:
+          return VII;
+        default:
+          throw new IllegalArgumentException(
+            new StringBuilder(32)
+              .append("Invalid scale degree: ")
+              .append(index)
+              .toString());
+      }
+    }
+
+    public Degree next()
+    {
+      switch (this) {
+        case I:
+          return II;
+        case II:
+          return III;
+        case III:
+          return IV;
+        case IV:
+          return V;
+        case V:
+          return VI;
+        case VI:
+          return VII;
+        case VII:
+          return I;
+      }
+
+      throw new UnreachableCodeException();
+    }
+
+    public Degree previous()
+    {
+      switch (this) {
+        case I:
+          return VII;
+        case II:
+          return I;
+        case III:
+          return II;
+        case IV:
+          return III;
+        case V:
+          return IV;
+        case VI:
+          return V;
+        case VII:
+          return VI;
+      }
+
+      throw new UnreachableCodeException();
+    }
+
+    public Degree stepBy(final int steps)
+    {
+      if (steps == 0) {
+        return this;
+      }
+
+      Degree result = this;
+      for (int index = 0; index < Math.abs(steps); ++index) {
+        if (steps > 0) {
+          result = result.next();
+        } else {
+          result = result.previous();
+        }
+      }
+      return result;
+    }
   }
 
   /**
@@ -543,7 +674,7 @@ public final class JaCPDSL
       CHORD_INVERSION,
 
       /**
-       * A chord substituted with a chord a tritone away.
+       * A chord substituted with a output a tritone away.
        */
 
       CHORD_TRITONE,
@@ -558,7 +689,13 @@ public final class JaCPDSL
        * A chromatic mediant substitution of a given chord.
        */
 
-      CHORD_CHROMATIC_MEDIANT
+      CHORD_CHROMATIC_MEDIANT,
+
+      /**
+       * A chromatic passing chord.
+       */
+
+      CHORD_CHROMATIC_PASSING;
     }
   }
 
@@ -1072,6 +1209,98 @@ public final class JaCPDSL
       sb.append(this.output.root().noteName());
       sb.append(this.dsl.names.name(this.output.intervals()));
       return sb.toString();
+    }
+  }
+
+  /**
+   * A chromatic passing chord.
+   */
+
+  public static final class ChordChromaticPassing implements ChordTermType
+  {
+    private final ChordDiatonic chord_0;
+    private final ChordDiatonic chord_1;
+    private final JaNote intermediate_root;
+    private final JaCPDSL dsl;
+    private JaChord output;
+
+    private ChordChromaticPassing(
+      final JaCPDSL in_dsl,
+      final ChordDiatonic chord_0,
+      final ChordDiatonic chord_1,
+      final JaNote intermediate_root)
+    {
+      this.dsl = Objects.requireNonNull(in_dsl, "DSL");
+      this.chord_0 = Objects.requireNonNull(chord_0, "chord_0");
+      this.chord_1 = Objects.requireNonNull(chord_1, "chord_1");
+      this.intermediate_root = Objects.requireNonNull(intermediate_root, "intermediate_root");
+      this.output = this.evaluateEager();
+    }
+
+    private JaChord evaluateEager()
+    {
+      final HashSet<JaNote> common_notes = commonNotes(this.chord_0, this.chord_1);
+
+      HashSet<JaNote> result_notes;
+      if (common_notes.isEmpty()) {
+        final boolean ascending = isAscending(this.chord_0, this.chord_1, this.intermediate_root);
+        if (ascending) {
+          result_notes = HashSet.empty();
+          result_notes = result_notes.add(this.chord_0.chord.notes().filter(note -> note != this.chord_0.chord.root()).last());
+          result_notes = result_notes.add(this.chord_1.chord.notes().filter(note -> note != this.chord_0.chord.root()).head());
+        } else {
+          result_notes = HashSet.empty();
+          result_notes = result_notes.add(this.chord_0.chord.notes().filter(note -> note != this.chord_0.chord.root()).head());
+          result_notes = result_notes.add(this.chord_1.chord.notes().filter(note -> note != this.chord_0.chord.root()).last());
+        }
+      } else {
+        result_notes = common_notes;
+      }
+
+      return JaChord.of(this.intermediate_root, JaChordIntervals.of(result_notes.map(note -> Integer.valueOf(
+        this.intermediate_root.intervalUpTo(note))).toSortedSet()));
+    }
+
+    private static HashSet<JaNote> commonNotes(
+      final ChordDiatonic chord_0,
+      final ChordDiatonic chord_1)
+    {
+      return HashSet.ofAll(chord_0.chord.notes()).intersect(HashSet.ofAll(chord_1.chord.notes()));
+    }
+
+    private static boolean isAscending(
+      final ChordDiatonic chord_0,
+      final ChordDiatonic chord_1,
+      final JaNote intermediate_root)
+    {
+      final Vector<JaNote> ordered = Vector.of(
+        chord_0.chord.root(),
+        chord_1.chord.root())
+        .sortBy(note -> Integer.valueOf(note.intervalUpTo(intermediate_root)));
+
+      System.err.println("ordered: " + ordered);
+      return ordered.head() == chord_0.chord.root();
+    }
+
+    @Override
+    public String toString()
+    {
+      final StringBuilder sb = new StringBuilder(32);
+      sb.append(this.output.root().noteName());
+      sb.append(this.dsl.names.name(this.output.intervals()));
+      return sb.toString();
+    }
+
+    @Override
+    public JaChord evaluate()
+    {
+      return this.output;
+    }
+
+    @Override
+    public Type type()
+    {
+      return Type.CHORD_CHROMATIC_PASSING;
     }
   }
 }
