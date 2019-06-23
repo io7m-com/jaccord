@@ -1226,14 +1226,14 @@ public final class JaCPDSL
 
     private ChordChromaticPassing(
       final JaCPDSL in_dsl,
-      final ChordDiatonic chord_0,
-      final ChordDiatonic chord_1,
-      final JaNote intermediate_root)
+      final ChordDiatonic in_chord_0,
+      final ChordDiatonic in_chord_1,
+      final JaNote in_intermediate_root)
     {
       this.dsl = Objects.requireNonNull(in_dsl, "DSL");
-      this.chord_0 = Objects.requireNonNull(chord_0, "chord_0");
-      this.chord_1 = Objects.requireNonNull(chord_1, "chord_1");
-      this.intermediate_root = Objects.requireNonNull(intermediate_root, "intermediate_root");
+      this.chord_0 = Objects.requireNonNull(in_chord_0, "chord_0");
+      this.chord_1 = Objects.requireNonNull(in_chord_1, "chord_1");
+      this.intermediate_root = Objects.requireNonNull(in_intermediate_root, "intermediate_root");
       this.output = this.evaluateEager();
     }
 
@@ -1246,19 +1246,29 @@ public final class JaCPDSL
         final boolean ascending = isAscending(this.chord_0, this.chord_1, this.intermediate_root);
         if (ascending) {
           result_notes = HashSet.empty();
-          result_notes = result_notes.add(this.chord_0.chord.notes().filter(note -> note != this.chord_0.chord.root()).last());
-          result_notes = result_notes.add(this.chord_1.chord.notes().filter(note -> note != this.chord_0.chord.root()).head());
+          result_notes = result_notes
+            .add(this.chord_0.chord.notes()
+                   .filter(note -> note != this.chord_0.chord.root()).last());
+          result_notes = result_notes
+            .add(this.chord_1.chord.notes()
+                   .filter(note -> note != this.chord_0.chord.root()).head());
         } else {
           result_notes = HashSet.empty();
-          result_notes = result_notes.add(this.chord_0.chord.notes().filter(note -> note != this.chord_0.chord.root()).head());
-          result_notes = result_notes.add(this.chord_1.chord.notes().filter(note -> note != this.chord_0.chord.root()).last());
+          result_notes = result_notes
+            .add(this.chord_0.chord.notes()
+                   .filter(note -> note != this.chord_0.chord.root()).head());
+          result_notes = result_notes
+            .add(this.chord_1.chord.notes()
+                   .filter(note -> note != this.chord_0.chord.root()).last());
         }
       } else {
         result_notes = common_notes;
       }
 
-      return JaChord.of(this.intermediate_root, JaChordIntervals.of(result_notes.map(note -> Integer.valueOf(
-        this.intermediate_root.intervalUpTo(note))).toSortedSet()));
+      return JaChord.of(
+        this.intermediate_root,
+        JaChordIntervals.of(result_notes.map(note -> Integer.valueOf(
+          this.intermediate_root.intervalUpTo(note))).toSortedSet()));
     }
 
     private static HashSet<JaNote> commonNotes(
@@ -1273,13 +1283,14 @@ public final class JaCPDSL
       final ChordDiatonic chord_1,
       final JaNote intermediate_root)
     {
-      final Vector<JaNote> ordered = Vector.of(
-        chord_0.chord.root(),
-        chord_1.chord.root())
-        .sortBy(note -> Integer.valueOf(note.intervalUpTo(intermediate_root)));
+      final JaNote c0_root = chord_0.chord.root();
+      final JaNote c1_root = chord_1.chord.root();
+      final Vector<JaNote> ordered =
+        Vector.of(c0_root, c1_root)
+          .sortBy(note -> Integer.valueOf(note.intervalUpTo(intermediate_root)));
 
       System.err.println("ordered: " + ordered);
-      return ordered.head() == chord_0.chord.root();
+      return ordered.head() == c0_root;
     }
 
     @Override

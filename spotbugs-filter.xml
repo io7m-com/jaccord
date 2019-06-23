@@ -12,6 +12,7 @@
       <Bug pattern="DLS_DEAD_LOCAL_STORE" />
       <Bug pattern="ITC_INHERITANCE_TYPE_CHECKING"/>
       <Bug pattern="PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS"/>
+      <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
     </Or>
   </Match>
 

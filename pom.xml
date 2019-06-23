@@ -38,7 +38,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <io7m.api.previousVersion>0.0.1</io7m.api.previousVersion>
-    <io7m.org.immutables.version>2.6.0-alpha3</io7m.org.immutables.version>
+    <io7m.org.immutables.version>2.7.5</io7m.org.immutables.version>
   </properties>
 
   <inceptionYear>2017</inceptionYear>
@@ -98,14 +98,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.io7m.jnull</groupId>
-        <artifactId>com.io7m.jnull.core</artifactId>
-        <version>2.0.0-beta0001</version>
-      </dependency>
-      <dependency>
         <groupId>com.io7m.junreachable</groupId>
         <artifactId>com.io7m.junreachable.core</artifactId>
-        <version>2.1.1</version>
+        <version>3.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.io7m.jlexing</groupId>
@@ -121,7 +116,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.8.0-beta4</version>
+        <version>1.8.0-beta0</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -162,13 +157,11 @@
           <version>0.3.1</version>
         </plugin>
 
-        <!-- Require JDK >= 8 -->
+        <!-- Configure compiler -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
             <annotationProcessorPaths>
               <dependency>
                 <groupId>org.immutables</groupId>
