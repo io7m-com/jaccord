@@ -22,6 +22,7 @@
     <module>com.io7m.jaccord.chord_names.api</module>
     <module>com.io7m.jaccord.chord_names.vanilla</module>
     <module>com.io7m.jaccord.core</module>
+    <module>com.io7m.jaccord.cpdsl.midi</module>
     <module>com.io7m.jaccord.cpdsl</module>
     <module>com.io7m.jaccord.documentation</module>
     <module>com.io7m.jaccord.parser.api</module>
@@ -30,14 +31,13 @@
     <module>com.io7m.jaccord.scales.spi</module>
     <module>com.io7m.jaccord.scales.vanilla</module>
     <module>com.io7m.jaccord.tests</module>
-    <module>com.io7m.jaccord.cpdsl.midi</module>
   </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <io7m.api.previousVersion>0.0.1</io7m.api.previousVersion>
+    <io7m.api.previousVersion>0.0.1-SNAPSHOT</io7m.api.previousVersion>
     <io7m.org.immutables.version>2.7.5</io7m.org.immutables.version>
   </properties>
 
