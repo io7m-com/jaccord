@@ -131,6 +131,11 @@
         <artifactId>value</artifactId>
         <version>${io7m.org.immutables.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.io7m.primogenitor</groupId>
+        <artifactId>com.io7m.primogenitor.support</artifactId>
+        <version>3.3.0</version>
+      </dependency>
 
       <dependency>
         <groupId>org.junit.jupiter</groupId>

@@ -76,6 +76,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.io7m.primogenitor</groupId>
+      <artifactId>com.io7m.primogenitor.support</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
       <scope>provided</scope>
@@ -162,49 +167,57 @@
         </executions>
       </plugin>
 
-      <!-- Javadoc handling -->
+      <!-- Unpack sources of dependencies -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
-          <!-- Produce javadoc jar for Central -->
           <execution>
-            <id>attach-javadocs</id>
+            <id>unpack-sources</id>
             <phase>package</phase>
             <goals>
-              <goal>jar</goal>
+              <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
-              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; http://io7m.com]]></bottom>
-              <archive>
-                <manifestEntries>
-                  <Specification-Title>${project.artifactId}</Specification-Title>
-                  <Specification-Version>${project.version}</Specification-Version>
-                  <Specification-Vendor>io7m.com</Specification-Vendor>
-                  <Implementation-Title>${project.artifactId}</Implementation-Title>
-                  <Implementation-Version>${project.version}</Implementation-Version>
-                  <Implementation-Vendor>io7m.com</Implementation-Vendor>
-                  <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
-                  <Built-By>io7m</Built-By>
-                </manifestEntries>
-              </archive>
+              <excludes>module-info.java</excludes>
+              <includeGroupIds>${project.groupId}</includeGroupIds>
+              <classifier>sources</classifier>
+              <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+              <outputDirectory>${project.build.directory}/javadoc-sources</outputDirectory>
             </configuration>
           </execution>
-          <!-- Produce aggregate dependency javadocs -->
           <execution>
-            <id>javadoc-aggregate</id>
+            <id>make-classpath</id>
             <phase>package</phase>
             <goals>
-              <goal>javadoc-no-fork</goal>
+              <goal>build-classpath</goal>
             </goals>
             <configuration>
-              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; http://io7m.com]]></bottom>
-              <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
-              <includeDependencySources>true</includeDependencySources>
-              <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
-              <dependencySourceIncludes>
-                <dependencySourceSet>com.io7m.jaccord*</dependencySourceSet>
-              </dependencySourceIncludes>
+              <outputFile>${project.build.directory}/javadoc-classpath</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Javadoc handling -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <mainClass>com.io7m.primogenitor.support.TrivialJavadoc</mainClass>
+              <arguments>
+                <argument>${project.build.directory}/javadoc-sources</argument>
+                <argument>${project.build.directory}/javadoc-classpath</argument>
+                <argument>${project.build.directory}/documentation/apidocs</argument>
+                <argument>${project.build.directory}/javadoc-log.txt</argument>
+                <argument>${project.build.directory}/javadoc-options</argument>
+              </arguments>
             </configuration>
           </execution>
         </executions>
