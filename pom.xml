@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.full</artifactId>
-    <version>3.1.0</version>
+    <version>3.4.0</version>
   </parent>
 
   <groupId>com.io7m.jaccord</groupId>
@@ -34,9 +34,7 @@
   </modules>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+    <com.codacy.id>0928b36e81134931ae7558895c5f990a</com.codacy.id>
     <io7m.api.previousVersion>0.0.1-SNAPSHOT</io7m.api.previousVersion>
     <io7m.org.immutables.version>2.7.5</io7m.org.immutables.version>
   </properties>

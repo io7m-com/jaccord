@@ -7,6 +7,8 @@ import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.core.JaScale;
 import com.io7m.jaccord.core.JaScaleHarmonization;
 import com.io7m.jaccord.core.JaScaleHarmonizationChordTypes;
+import com.io7m.jaccord.core.JaScaleIntervals;
+import com.io7m.jaccord.core.JaScaleModes;
 import com.io7m.jaccord.core.JaScaleNamed;
 import com.io7m.jaccord.parser.api.JaAccidentalEncoding;
 import com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration;
@@ -55,44 +57,58 @@ public final class JaScaleByNameDemo
 
     r_scale.forEach(named_scale -> {
       final JaScale scale = JaScale.of(note, named_scale.intervals());
+      showNamedScalesOf(scale, named_scale.intervals());
+      showSeventhChordsOf(scale);
 
-      {
-        final List<JaScaleNamed> names =
-          JaScales.scalesByIntervals(named_scale.intervals());
-
-        names.forEach(
-          named -> System.out.printf(
-            "Scale name: %s %s\n",
-            scale.root().noteName(),
-            named.name()));
-
-        System.out.println();
-      }
-
-      final Vector<JaChord> chords =
-        JaScaleHarmonization.harmonize(
-          JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale);
-
-      for (int index = 0; index < chords.size(); ++index) {
-        final JaChord chord = chords.get(index);
-        final String r_name = JaChordNames.name(chord.intervals());
-
-        System.out.printf(
-          "%-2s : %s%s (%s)\n",
-          chord.root().noteName(),
-          chord.root().noteName(),
-          r_name,
-          chord.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
-
-        JaChordInversions.inversions(chord).forEach(inversion -> {
-          System.out.printf(
-            "    %-2s : %s%s (%s)\n",
-            inversion.root().noteName(),
-            inversion.root().noteName(),
-            r_name,
-            inversion.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
-        });
+      final Vector<JaScale> modes = JaScaleModes.modes(scale);
+      for (final JaScale mode : modes) {
+        showNamedScalesOf(scale, mode.intervals());
       }
     });
+  }
+
+  private static void showSeventhChordsOf(
+    final JaScale scale)
+  {
+    final Vector<JaChord> chords =
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.SEVENTH_CHORDS, scale);
+
+    for (int index = 0; index < chords.size(); ++index) {
+      final JaChord chord = chords.get(index);
+      final String r_name = JaChordNames.name(chord.intervals());
+
+      System.out.printf(
+        "%-2s : %s%s (%s)\n",
+        chord.root().noteName(),
+        chord.root().noteName(),
+        r_name,
+        chord.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
+
+      JaChordInversions.inversions(chord).forEach(inversion -> {
+        System.out.printf(
+          "    %-2s : %s%s (%s)\n",
+          inversion.root().noteName(),
+          inversion.root().noteName(),
+          r_name,
+          inversion.notes().map(JaNote::noteName).collect(Collectors.joining(" ")));
+      });
+    }
+  }
+
+  private static void showNamedScalesOf(
+    final JaScale scale,
+    final JaScaleIntervals intervals)
+  {
+    final List<JaScaleNamed> names =
+      JaScales.scalesByIntervals(intervals);
+
+    names.forEach(
+      named -> System.out.printf(
+        "Scale name: %s %s\n",
+        scale.root().noteName(),
+        named.name()));
+
+    System.out.println();
   }
 }
