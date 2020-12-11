@@ -28,19 +28,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.io7m.jaccord.core.JaNote.B;
+import static com.io7m.jaccord.core.JaNote.C;
 import static com.io7m.jaccord.core.JaNote.E;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.I;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.II;
-import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.III;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.IV;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.V;
 import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VI;
-import static com.io7m.jaccord.cpdsl.JaCPDSL.Degree.VII;
 
-public final class JaCPDSLDemo8
+public final class JaCPDSLDemo10
 {
-  private JaCPDSLDemo8()
+  private JaCPDSLDemo10()
   {
 
   }
@@ -51,43 +49,22 @@ public final class JaCPDSLDemo8
   {
     final JaCPDSL d = JaCPDSL.create();
 
-    final JaCPDSL.Scale base = d.scale(B, "Natural_Minor");
-    final JaCPDSL.Scale flavour = d.scale(B, "Phrygian_Mode");
-    final JaCPDSL.Scale passing = d.scale(B, "Harmonic_Minor");
-
-    final JaCPDSL.Scale target = d.scale(E, "Natural_Minor");
-    final JaCPDSL.Scale target_passing = d.scale(E, "Harmonic_Minor");
+    final JaCPDSL.Scale base = d.scale(C, "Major");
 
     final JaCPDSL.Progression p =
       d.progression(
-        d.change(d.diatonic9(flavour, I), 4),
-        d.change(d.diatonic7(flavour, VII), 3),
-        d.change(d.diatonic9(flavour, I), 4),
-        d.change(d.diatonic7(base, IV), 3),
-        d.change(d.diatonic9(flavour, I), 4),
-        d.change(d.diatonic7(flavour, VII), 3),
-        d.change(d.diatonic7(base, IV), 7),
-
-        d.change(d.diatonic9(flavour, I), 4),
-        d.change(d.diatonic7(flavour, VII), 3),
-        d.change(d.diatonic9(flavour, I), 4),
-        d.change(d.diatonic7(base, III), 3),
-        d.change(d.diatonic9(base, VI), 4),
-        d.change(d.diatonic7(base, II), 3),
-        d.change(d.diatonic7(passing, V), 5),
-        d.change(d.diatonic7(passing, VII), 2),
-
-        d.change(d.diatonic7(flavour, I), 4),
-        d.change(d.secondaryDominant(d.diatonic7(target, V)), 1),
-        d.change(d.tritoneSecondaryDominant(d.diatonic7(target, V)), 1),
-        d.change(d.diatonic7(target_passing, V), 1),
-        d.change(d.diatonic7(target, I), 7)
+        d.change(d.diatonic7(base, VI), 4),
+        d.change(d.diatonic(base, IV), 4),
+        d.change(d.diatonic(base, II), 4),
+        d.change(d.diatonic(base, V), 4),
+        d.change(d.diatonic7(base, I), 4)
       );
 
     System.out.println(p);
 
     final JaCPDSLExporterConfiguration configuration =
       JaCPDSLExporterConfiguration.builder()
+        .setDoubleRoot(false)
         .setOmitFifth(false)
         .setVoiceLeading(true)
         .build();

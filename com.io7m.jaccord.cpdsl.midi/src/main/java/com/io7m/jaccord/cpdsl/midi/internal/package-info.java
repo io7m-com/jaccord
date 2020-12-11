@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Mark Raynsford <code@io7m.com> http://io7m.com
+ * Copyright © 2017 <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,25 +15,7 @@
  */
 
 /**
- * Chord progression DSL MIDI utilities.
+ * Chord progression DSL MIDI utilities (Internal classes).
  */
 
-
-module com.io7m.jaccord.cpdsl.midi
-{
-  requires transitive com.io7m.jaccord.chord_names.api;
-  requires transitive com.io7m.jaccord.core;
-  requires transitive com.io7m.jaccord.cpdsl;
-  requires transitive com.io7m.jaccord.scales.api;
-
-  requires static com.io7m.immutables.style;
-  requires static org.immutables.value;
-
-  requires org.slf4j;
-  requires org.apache.commons.collections4;
-  requires com.io7m.junreachable.core;
-  requires io.vavr;
-  requires java.desktop;
-
-  exports com.io7m.jaccord.cpdsl.midi;
-}
+package com.io7m.jaccord.cpdsl.midi.internal;

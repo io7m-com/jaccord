@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 Mark Raynsford <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,48 +14,20 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jaccord.cpdsl.midi;
+package com.io7m.jaccord.cpdsl.midi.internal;
 
 import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
-import static org.immutables.value.Value.Immutable;
-
-/**
- * Configuration values for MIDI exporters.
- */
+import java.util.List;
 
 @ImmutablesStyleType
-@Immutable
-public interface JaCPDSLExporterConfigurationType
+@Value.Immutable
+public interface JaMidiChordType
 {
-  /**
-   * @return {@code true} if the root note of each chord should be doubled
-   */
+  long timeStart();
 
-  @Value.Default
-  default boolean doubleRoot()
-  {
-    return false;
-  }
+  long timeEnd();
 
-  /**
-   * @return {@code true} if the fifths of each chord should be omitted
-   */
-
-  @Value.Default
-  default boolean omitFifth()
-  {
-    return false;
-  }
-
-  /**
-   * @return {@code true} if the notes of the chords should be adjusted for voice leading
-   */
-
-  @Value.Default
-  default boolean voiceLeading()
-  {
-    return false;
-  }
+  List<Integer> midiNotes();
 }
