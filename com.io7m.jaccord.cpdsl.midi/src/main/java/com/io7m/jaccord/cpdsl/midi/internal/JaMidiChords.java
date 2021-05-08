@@ -24,12 +24,27 @@ import com.io7m.junreachable.UnreachableCodeException;
 
 import java.util.ArrayList;
 
+/**
+ * Functions over midi chords.
+ */
+
 public final class JaMidiChords
 {
   private JaMidiChords()
   {
 
   }
+
+  /**
+   * Produce a midi chord.
+   *
+   * @param configuration The exporter configuration
+   * @param timeStart     The start time
+   * @param timeEnd       The ending time
+   * @param chord         The chord description
+   *
+   * @return A chord
+   */
 
   public static JaMidiChord midiChordOf(
     final JaCPDSLExporterConfiguration configuration,

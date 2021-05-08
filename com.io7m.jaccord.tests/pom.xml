@@ -83,24 +83,11 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
     </dependency>
-  </dependencies>
 
-  <build>
-    <plugins>
-      <!-- Check style -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>9</source>
-          <target>9</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <dependency>
+      <groupId>org.jaudiolibs</groupId>
+      <artifactId>jnajack</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

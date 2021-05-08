@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Brute force voice leading.
+ */
+
 public final class JaVoiceLeading
 {
   private static final Logger LOG =
@@ -33,6 +37,14 @@ public final class JaVoiceLeading
   {
 
   }
+
+  /**
+   * Try to transform a list of chords into a form with better voice leading.
+   *
+   * @param chords The input chords
+   *
+   * @return The result chords
+   */
 
   public static List<JaMidiChord> withVoiceLeading(
     final List<JaMidiChord> chords)
@@ -79,7 +91,9 @@ public final class JaVoiceLeading
       final var newNotes = new ArrayList<>(notes);
       for (int note = 0; note < iteration; ++note) {
         final int nIndex = (noteCount - 1) - note;
-        newNotes.set(nIndex, Integer.valueOf(newNotes.get(nIndex).intValue() - 12));
+        newNotes.set(
+          nIndex,
+          Integer.valueOf(newNotes.get(nIndex).intValue() - 12));
       }
       Collections.sort(newNotes);
       results.add(chord.withMidiNotes(newNotes));

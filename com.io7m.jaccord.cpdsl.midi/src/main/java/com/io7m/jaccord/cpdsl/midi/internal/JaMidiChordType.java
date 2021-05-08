@@ -21,13 +21,29 @@ import org.immutables.value.Value;
 
 import java.util.List;
 
+/**
+ * A midi chord.
+ */
+
 @ImmutablesStyleType
 @Value.Immutable
 public interface JaMidiChordType
 {
+  /**
+   * @return The starting time
+   */
+
   long timeStart();
 
+  /**
+   * @return The ending time
+   */
+
   long timeEnd();
+
+  /**
+   * @return The list of notes
+   */
 
   List<Integer> midiNotes();
 }

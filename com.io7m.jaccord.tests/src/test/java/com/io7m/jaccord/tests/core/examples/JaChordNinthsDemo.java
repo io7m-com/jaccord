@@ -2,10 +2,10 @@ package com.io7m.jaccord.tests.core.examples;
 
 import com.io7m.jaccord.chord_names.vanilla.JaChordNames;
 import com.io7m.jaccord.core.JaChord;
-import com.io7m.jaccord.core.JaErrorType;
 import com.io7m.jaccord.core.JaChordInversions;
 import com.io7m.jaccord.core.JaChordSlash;
 import com.io7m.jaccord.core.JaChordSlashes;
+import com.io7m.jaccord.core.JaErrorType;
 import com.io7m.jaccord.core.JaNote;
 import com.io7m.jaccord.parser.api.JaAccidentalEncoding;
 import com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration;
@@ -19,7 +19,6 @@ import io.vavr.control.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.SwingUtilities;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,11 +28,11 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public final class JaChordDemo
+public final class JaChordNinthsDemo
 {
-  private static final Logger LOG = LoggerFactory.getLogger(JaChordDemo.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JaChordNinthsDemo.class);
 
-  private JaChordDemo()
+  private JaChordNinthsDemo()
   {
 
   }
@@ -68,7 +67,7 @@ public final class JaChordDemo
           parser.parseLine(line_trimmed);
 
         if (r.isInvalid()) {
-          r.getError().forEach(JaChordDemo::logParseError);
+          r.getError().forEach(JaChordNinthsDemo::logParseError);
           continue;
         }
 

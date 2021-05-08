@@ -459,6 +459,16 @@ public final class JaCPDSL
     return new ChordAltered(this, input, add, HashMap.empty());
   }
 
+  /**
+   * Add a chromatic passing chord between two chords.
+   *
+   * @param chord_0           The start chord
+   * @param chord_1           The end chord
+   * @param intermediate_root The root of the intermediate chord
+   *
+   * @return A chord term
+   */
+
   public ChordTermType chromaticPassing(
     final ChordDiatonic chord_0,
     final ChordDiatonic chord_1,
@@ -467,12 +477,21 @@ public final class JaCPDSL
     return new ChordChromaticPassing(this, chord_0, chord_1, intermediate_root);
   }
 
+  /**
+   * @param scale  The scale
+   * @param degree The scale degree
+   *
+   * @return The note of the scale
+   */
+
   public JaNote noteOfDegree(
     final Scale scale,
     final Degree degree)
   {
     final Vector<JaChord> triads =
-      JaScaleHarmonization.harmonize(JaScaleHarmonizationChordTypes.TRIADS, scale.scale);
+      JaScaleHarmonization.harmonize(
+        JaScaleHarmonizationChordTypes.TRIADS,
+        scale.scale);
 
     if (degree.ordinal() < triads.size()) {
       return triads.get(degree.ordinal()).root();
@@ -561,6 +580,10 @@ public final class JaCPDSL
       }
     }
 
+    /**
+     * @return The next scale degree
+     */
+
     public Degree next()
     {
       switch (this) {
@@ -583,6 +606,10 @@ public final class JaCPDSL
       throw new UnreachableCodeException();
     }
 
+    /**
+     * @return The previous scale degree
+     */
+
     public Degree previous()
     {
       switch (this) {
@@ -604,6 +631,14 @@ public final class JaCPDSL
 
       throw new UnreachableCodeException();
     }
+
+    /**
+     * Step {@code steps} up the scale.
+     *
+     * @param steps The number of steps
+     *
+     * @return The resulting degree
+     */
 
     public Degree stepBy(final int steps)
     {
@@ -1233,17 +1268,24 @@ public final class JaCPDSL
       this.dsl = Objects.requireNonNull(in_dsl, "DSL");
       this.chord_0 = Objects.requireNonNull(in_chord_0, "chord_0");
       this.chord_1 = Objects.requireNonNull(in_chord_1, "chord_1");
-      this.intermediate_root = Objects.requireNonNull(in_intermediate_root, "intermediate_root");
+      this.intermediate_root = Objects.requireNonNull(
+        in_intermediate_root,
+        "intermediate_root");
       this.output = this.evaluateEager();
     }
 
     private JaChord evaluateEager()
     {
-      final HashSet<JaNote> common_notes = commonNotes(this.chord_0, this.chord_1);
+      final HashSet<JaNote> common_notes = commonNotes(
+        this.chord_0,
+        this.chord_1);
 
       HashSet<JaNote> result_notes;
       if (common_notes.isEmpty()) {
-        final boolean ascending = isAscending(this.chord_0, this.chord_1, this.intermediate_root);
+        final boolean ascending = isAscending(
+          this.chord_0,
+          this.chord_1,
+          this.intermediate_root);
         if (ascending) {
           result_notes = HashSet.empty();
           result_notes = result_notes
@@ -1275,7 +1317,8 @@ public final class JaCPDSL
       final ChordDiatonic chord_0,
       final ChordDiatonic chord_1)
     {
-      return HashSet.ofAll(chord_0.chord.notes()).intersect(HashSet.ofAll(chord_1.chord.notes()));
+      return HashSet.ofAll(chord_0.chord.notes()).intersect(HashSet.ofAll(
+        chord_1.chord.notes()));
     }
 
     private static boolean isAscending(
@@ -1288,8 +1331,6 @@ public final class JaCPDSL
       final Vector<JaNote> ordered =
         Vector.of(c0_root, c1_root)
           .sortBy(note -> Integer.valueOf(note.intervalUpTo(intermediate_root)));
-
-      System.err.println("ordered: " + ordered);
       return ordered.head() == c0_root;
     }
 
