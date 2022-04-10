@@ -13,7 +13,7 @@ Regular releases are made to the
 [link-ext [target "http://search.maven.org/#search%7Cga%7C1%7C${project.parent.name}"] Central Repository].
 
 [paragraph]
-All [link-ext [target "http://io7m.com"] io7m.com] packages use
+All [link-ext [target "https://www.io7m.com"] io7m.com] packages use
 Semantic Versioning [footnote-ref semver], which implies that it is
 always safe to use version ranges with an exclusive upper bound equal
 to the next major version - the API of the package will not change in

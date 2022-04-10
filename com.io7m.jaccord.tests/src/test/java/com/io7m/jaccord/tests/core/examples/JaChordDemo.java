@@ -52,7 +52,8 @@ public final class JaChordDemo
           .build();
 
       final JaChordNoteParserType parser =
-        new JaChordNoteParsers().create(Paths.get(""), config);
+        new JaChordNoteParsers()
+          .create(Paths.get(""), config);
 
       while (true) {
         final String line = reader.readLine();
@@ -89,7 +90,10 @@ public final class JaChordDemo
         "Base",
         base.root().noteName(),
         name,
-        base.notes().map(JaNote::noteName).collect(Collectors.joining(" "))));
+        base.notes()
+          .map(JaNote::noteName)
+          .collect(Collectors.joining(" ")))
+    );
 
     try {
       final Optional<JaChordSlash> base_slash_opt =

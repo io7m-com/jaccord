@@ -16,7 +16,7 @@
 
   <name>com.io7m.jaccord</name>
   <description>Harmony tools</description>
-  <url>http://github.com/io7m/jaccord</url>
+  <url>https://www.io7m.com/software/jaccord</url>
 
   <modules>
     <module>com.io7m.jaccord.chord_names.api</module>
@@ -34,7 +34,6 @@
   </modules>
 
   <properties>
-    <com.codacy.id>0928b36e81134931ae7558895c5f990a</com.codacy.id>
     <io7m.api.previousVersion>0.0.1-SNAPSHOT</io7m.api.previousVersion>
     <io7m.org.immutables.version>2.7.5</io7m.org.immutables.version>
   </properties>
@@ -44,7 +43,7 @@
   <licenses>
     <license>
       <name>ISC License</name>
-      <url>http://io7m.com/license/isc.txt</url>
+      <url>https://www.io7m.com/license/isc.txt</url>
     </license>
   </licenses>
 
@@ -59,12 +58,12 @@
       <id>io7m</id>
       <name>io7m</name>
       <email>code@io7m.com</email>
-      <url>http://io7m.com</url>
+      <url>https://www.io7m.com</url>
     </developer>
   </developers>
 
   <issueManagement>
-    <url>http://github.com/io7m/jaccord/issues</url>
+    <url>https://github.com/io7m/jaccord/issues</url>
     <system>GitHub Issues</system>
   </issueManagement>
 

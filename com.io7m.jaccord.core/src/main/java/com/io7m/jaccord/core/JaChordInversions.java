@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 <code@io7m.com> http://io7m.com
+ * Copyright © 2017 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -54,7 +54,8 @@ public final class JaChordInversions
       intervals
         .tail()
         .add(nextLargerThanMax(intervals.max().get().intValue(), 12))
-        .map(i -> Integer.valueOf(i.intValue() - first.intValue()));
+        .map(i -> Integer.valueOf(i.intValue() - first.intValue()))
+        .toSortedSet();
 
     return JaChord.of(new_root, JaChordIntervals.of(new_intervals));
   }

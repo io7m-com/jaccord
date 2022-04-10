@@ -49,6 +49,14 @@
   </Match>
 
   <Match>
+    <Or>
+      <Class name="com.io7m.jaccord.cpdsl.JaCPDSL$Progression"/>
+      <Class name="com.io7m.jaccord.cpdsl.midi.internal.JaMidiChord"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <Match>
     <Method name="checkPreconditions"/>
     <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
   </Match>
