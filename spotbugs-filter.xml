@@ -26,9 +26,10 @@
       <Class name="com.io7m.jaccord.core.JaScaleIntervals"/>
       <Class name="com.io7m.jaccord.core.JaScaleNamed"/>
       <Class name="com.io7m.jaccord.cpdsl.midi.JaCPDSLExporterConfiguration"/>
+      <Class name="com.io7m.jaccord.cpdsl.midi.internal.JaMidiChord"/>
       <Class name="com.io7m.jaccord.parser.api.JaChordNoteParserConfiguration"/>
-      <Class name="com.io7m.jaccord.parser.api.JaScaleParserConfiguration"/>
       <Class name="com.io7m.jaccord.parser.api.JaParseError"/>
+      <Class name="com.io7m.jaccord.parser.api.JaScaleParserConfiguration"/>
     </Or>
   </Match>
 
