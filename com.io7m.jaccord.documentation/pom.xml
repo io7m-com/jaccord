@@ -17,7 +17,7 @@
 
   <name>com.io7m.jaccord.documentation</name>
   <description>Harmony tools (Documentation)</description>
-  <url>http://io7m.github.io/jaccord/</url>
+  <url>https://www.io7m.com/software/jaccord/</url>
 
   <properties>
     <mdep.analyze.skip>true</mdep.analyze.skip>

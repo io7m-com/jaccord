@@ -49,9 +49,9 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/io7m/jaccord</url>
-    <connection>scm:git:https://github.com/io7m/jaccord</connection>
-    <developerConnection>scm:git:https://github.com/io7m/jaccord</developerConnection>
+    <url>https://www.github.com/io7m-com/jaccord</url>
+    <connection>scm:git:https://www.github.com/io7m-com/jaccord</connection>
+    <developerConnection>scm:git:https://www.github.com/io7m-com/jaccord</developerConnection>
   </scm>
 
   <developers>
@@ -64,7 +64,7 @@
   </developers>
 
   <issueManagement>
-    <url>https://github.com/io7m/jaccord/issues</url>
+    <url>https://www.github.com/io7m-com/jaccord/issues</url>
     <system>GitHub Issues</system>
   </issueManagement>
 
@@ -86,7 +86,7 @@
 
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://github.com/jaccord/actions</url>
+    <url>https://www.github.com/io7m-com/jaccord/actions</url>
   </ciManagement>
 
   <prerequisites>
