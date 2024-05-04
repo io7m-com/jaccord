@@ -1,0 +1,12 @@
+
+## jaccord
+
+The `jaccord` package provides classes for assisting with musical analysis.
+
+## Features
+
+* Written in pure Java 21.
+* High coverage test suite.
+* [OSGi-ready](https://www.osgi.org/)
+* [JPMS-ready](https://en.wikipedia.org/wiki/Java_Platform_Module_System)
+* ISC license.

@@ -24,7 +24,6 @@
     <module>com.io7m.jaccord.core</module>
     <module>com.io7m.jaccord.cpdsl.midi</module>
     <module>com.io7m.jaccord.cpdsl</module>
-    <module>com.io7m.jaccord.documentation</module>
     <module>com.io7m.jaccord.parser.api</module>
     <module>com.io7m.jaccord.parser.vanilla</module>
     <module>com.io7m.jaccord.scales.api</module>
@@ -34,8 +33,11 @@
   </modules>
 
   <properties>
+    <!-- Configuration -->
     <io7m.api.previousVersion>0.0.1-SNAPSHOT</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
+
+    <!-- Third-party dependencies. -->
     <io7m.org.immutables.version>2.10.1</io7m.org.immutables.version>
   </properties>
 
@@ -163,13 +165,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- KStructural Maven Plugin -->
-        <plugin>
-          <groupId>com.io7m.kstructural</groupId>
-          <artifactId>io7m-kstructural-maven-plugin</artifactId>
-          <version>0.3.1</version>
-        </plugin>
-
         <!-- Configure compiler -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

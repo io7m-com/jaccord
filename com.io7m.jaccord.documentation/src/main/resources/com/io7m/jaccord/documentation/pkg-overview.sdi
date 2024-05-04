@@ -1,5 +1,0 @@
-[section [title Orientation] [id pkg.orientation]]
-[subsection [title Overview] [id pkg.orientation.overview]]
-[paragraph]
-The [term [type package] ${project.parent.name}] package implements
-something.
