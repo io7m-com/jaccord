@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:changelog xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
-  <c:project>com.io7m.jaccord</c:project>
 
-  <c:release c:ticket-system="com.github.io7m.jaccord">
-    <c:date>2017-09-21</c:date>
-    <c:version>0.0.1</c:version>
-    <c:item>
-      <c:date>2017-09-21</c:date>
-      <c:type-code-new/>
-      <c:summary>Initial release.</c:summary>
-    </c:item>
-  </c:release>
+<c:changelog project="com.io7m.jaccord"
+             xmlns:c="urn:com.io7m.changelog:4.0">
+  <c:releases>
+    <c:release ticket-system="com.github.io7m.jaccord"
+               version="0.0.1"
+               date="2017-09-21T00:00:00+00:00">
+      <c:changes>
+        <c:change date="2017-09-21T00:00:00+00:00"
+                  summary="Initial release."/>
+      </c:changes>
+    </c:release>
+  </c:releases>
 
-  <c:ticket-system xml:id="com.github.io7m.jaccord">
-    <c:ticket-url>https://www.github.com/io7m-com/jaccord/issues/</c:ticket-url>
-  </c:ticket-system>
+  <c:ticket-systems>
+    <c:ticket-system id="com.github.io7m.jaccord"
+                     url="https://www.github.com/io7m-com/jaccord/issues/"
+                     default="true"/>
+  </c:ticket-systems>
 
 </c:changelog>
