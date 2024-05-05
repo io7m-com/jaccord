@@ -1,8 +1,8 @@
 
-name: main.linux.temurin.lts
+name: pr.linux.temurin.lts
 
 on:
-  push:
+  pull_request:
     branches: [ develop, feature/*, release/* ]
 
 jobs:
@@ -37,16 +37,5 @@ jobs:
           name: test-logs
           path: ./com.io7m.jaccord.tests/target/surefire-reports
 
-      - name: Coverage
-        uses: codecov/codecov-action@v4.3.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: com.io7m.jaccord.tests/target/site/jacoco-aggregate/jacoco.xml
 
-      - name: Deploy snapshot
-        if: ${{ steps.project_is_snapshot.outputs.IO7M_PROJECT_VERSION_IS_SNAPSHOT == 'true' }}
-        env:
-          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-        run: .github/workflows/deploy-snapshot.sh
 
