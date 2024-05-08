@@ -105,7 +105,7 @@
       <dependency>
         <groupId>com.io7m.jlexing</groupId>
         <artifactId>com.io7m.jlexing.core</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
       </dependency>
       <dependency>
         <groupId>com.io7m.immutables.style</groupId>
