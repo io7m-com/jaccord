@@ -17,15 +17,15 @@
 package com.io7m.jaccord.chord_names.vanilla;
 
 import com.io7m.jaccord.core.JaChordIntervals;
-
-import java.util.HashMap;
-import java.util.Objects;
 import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.collection.SortedSet;
 import io.vavr.collection.TreeSet;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 import static com.io7m.jaccord.core.JaIntervals.AUGMENTED_FIFTH;
 import static com.io7m.jaccord.core.JaIntervals.DIMINISHED_FIFTH;
@@ -625,7 +625,13 @@ public final class JaChordNames
 
   private enum FifthBehaviour
   {
+    /**
+     * Ignore fifths.
+     */
     IGNORE_FIFTH,
+    /**
+     * Do not ignore fifths.
+     */
     DO_NOT_IGNORE_FIFTHS
   }
 
