@@ -2,7 +2,7 @@ jaccord
 ===
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.io7m.jaccord/com.io7m.jaccord.svg?style=flat-square)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.jaccord%22)
-[![Maven Central (snapshot)](https://img.shields.io/nexus/s/com.io7m.jaccord/com.io7m.jaccord?server=https%3A%2F%2Fs01.oss.sonatype.org&style=flat-square)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/io7m/jaccord/)
+[![Maven Central (snapshot)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fcom%2Fio7m%2Fjaccord%2Fcom.io7m.jaccord%2Fmaven-metadata.xml&style=flat-square)](https://central.sonatype.com/repository/maven-snapshots/com/io7m/jaccord/)
 [![Codecov](https://img.shields.io/codecov/c/github/io7m-com/jaccord.svg?style=flat-square)](https://codecov.io/gh/io7m-com/jaccord)
 ![Java Version](https://img.shields.io/badge/21-java?label=java&color=e6c35c)
 
