@@ -41,7 +41,7 @@
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
 
     <!-- Third-party dependencies. -->
-    <io7m.org.immutables.version>2.12.0</io7m.org.immutables.version>
+    <io7m.org.immutables.version>2.12.1</io7m.org.immutables.version>
     <org.junit.version>5.14.1</org.junit.version>
   </properties>
 
