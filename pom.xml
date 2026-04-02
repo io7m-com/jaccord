@@ -42,7 +42,7 @@
 
     <!-- Third-party dependencies. -->
     <io7m.org.immutables.version>2.12.1</io7m.org.immutables.version>
-    <org.junit.version>5.14.2</org.junit.version>
+    <org.junit.version>5.14.3</org.junit.version>
   </properties>
 
   <inceptionYear>2017</inceptionYear>
